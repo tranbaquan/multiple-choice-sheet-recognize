@@ -4,12 +4,15 @@ import java.awt.*;
 import java.awt.image.*;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.opencv.core.*;
+import org.opencv.imgproc.Imgproc;
 
 public class ImageViewer {
     private JLabel imageView;
-
+    private Mat image;
     public void show(Mat image) {
         show(image, "Default");
     }
