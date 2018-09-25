@@ -11,7 +11,7 @@ import java.util.*;
 
 public class SheetRecognize {
 
-    private Mat input, canny;
+    private Mat input, edged, gray, blurred, thresh;
     private Rect boundingRect;
     private int questionNum;
     private ImageViewer imageViewer = new ImageViewer();
@@ -31,30 +31,27 @@ public class SheetRecognize {
         }
     }
 
-    public Mat imageProc() {
-        Mat gray = new Mat(input.rows(), input.cols(), CvType.CV_8UC3);
+    public void imageProc() {
+        gray = new Mat(input.rows(), input.cols(), CvType.CV_8UC3);
         Imgproc.cvtColor(input, gray, Imgproc.COLOR_BGR2GRAY);
 
-        Mat blurred = new Mat(gray.rows(), gray.cols(), CvType.CV_8UC3);
+        blurred = new Mat(gray.rows(), gray.cols(), CvType.CV_8UC3);
         Imgproc.GaussianBlur(gray, blurred, new Size(5, 5), 0);
 
-        Mat edged = new Mat(blurred.rows(), blurred.cols(), CvType.CV_8UC3);
+        edged = new Mat(blurred.rows(), blurred.cols(), CvType.CV_8UC3);
         Imgproc.Canny(blurred, edged, 100, 255);
-        this.canny = edged;
 
         Mat dilated = new Mat(edged.rows(), edged.cols(), CvType.CV_8UC3);
         Imgproc.dilate(edged, dilated, Imgproc.getStructuringElement(Imgproc.CV_SHAPE_RECT, new Size(5, 5)));
 
-        Mat thresh = new Mat(dilated.rows(), dilated.cols(), CvType.CV_8UC3);
+        thresh = new Mat(dilated.rows(), dilated.cols(), CvType.CV_8UC3);
         Imgproc.threshold(dilated, thresh, 150, 255, Imgproc.THRESH_BINARY);
-
-        return thresh;
     }
 
-    public void detectBoundingBox(Mat processed) {
+    public void detectBoundingBox() {
         ArrayList<MatOfPoint> contours = new ArrayList<>();
         Mat hierarchy = new Mat();
-        Imgproc.findContours(processed.clone(), contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
+        Imgproc.findContours(thresh.clone(), contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
 
         HashMap<Integer, MatOfPoint> boundingBox = new HashMap<>();
         MatOfPoint2f approxCurve = new MatOfPoint2f();
@@ -94,7 +91,7 @@ public class SheetRecognize {
     }
 
     public List<Rect> detectRows() {
-        Mat boundingMat = canny.submat(boundingRect);
+        Mat boundingMat = edged.submat(boundingRect);
         Mat boundingMat1 = input.submat(boundingRect);
         ArrayList<MatOfPoint> contours = new ArrayList<>();
         Mat hierarchy = new Mat();
@@ -113,7 +110,7 @@ public class SheetRecognize {
             if (ratio > 10 && ratio < 20) {
                 rows.add(rect);
                 Imgproc.rectangle(boundingMat1, new Point(rect.x, rect.y),
-                new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(255, 0, 0), 3);
+                        new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(255, 0, 0), 3);
             }
         }
 
@@ -129,7 +126,7 @@ public class SheetRecognize {
     }
 
     public List<List<Rect>> detectBubbles(List<Rect> records) {
-        Mat bounding = canny.submat(boundingRect);
+        Mat bounding = edged.submat(boundingRect);
 
         ImageViewer imageViewer = new ImageViewer();
         imageViewer.show(bounding);
@@ -169,15 +166,19 @@ public class SheetRecognize {
 
     public List<Integer> recognizeAnswer(List<List<Rect>> allOfChoices, List<Rect> records) {
         List<Integer> answer = new ArrayList<>();
-        Mat boundingMat = canny.submat(boundingRect);
+        Mat boundingMat = edged.submat(boundingRect);
         for (int i = 0; i < records.size(); i++) {
             Mat recordMat = boundingMat.submat(records.get(i));
             List<Rect> choiceOfRecord = allOfChoices.get(i);
-            for (int j = 0; j < choiceOfRecord.size() ; j++) {
-                Rect r2 = choiceOfRecord.get(j);
-                Imgproc.rectangle(recordMat, new Point(r2.x, r2.y), new Point(r2.x +r2.width, r2.y + r2.height), new Scalar(255,0,0));
-                Mat choice = recordMat.submat(choiceOfRecord.get(j));
-                System.out.println(choice.type());
+            for (int j = 0; j < choiceOfRecord.size(); j++) {
+                Rect r = choiceOfRecord.get(j);
+                Mat choiceMat = recordMat.submat(r);
+
+                int nonZero = Core.countNonZero(choiceMat);
+                double ratio = (double) nonZero / (Math.pow(r.width/2, 2) * 3.14);
+                if(ratio < 0.3) {
+                    answer.add(j+1);
+                }
             }
             imageViewer.show(recordMat);
         }

@@ -15,12 +15,13 @@ public class RecognizeRunner {
         SheetRecognize sheetRecognize = new SheetRecognize();
         sheetRecognize.readFile(file);
         sheetRecognize.setQuestionNum(10);
-        Mat processed = sheetRecognize.imageProc();
-        sheetRecognize.detectBoundingBox(processed);
+        sheetRecognize.imageProc();
+        sheetRecognize.detectBoundingBox();
         List<Rect> records = sheetRecognize.detectRows();
         List<List<Rect>> allChoices = sheetRecognize.detectBubbles(records);
         List<Integer> answers = sheetRecognize.recognizeAnswer(allChoices, records);
 
+        System.out.println(answers.size());
         for (int i = 0; i < answers.size(); i++) {
             System.out.println("Record "+ (i+1)+ ": " + answers.get(i));
         }
