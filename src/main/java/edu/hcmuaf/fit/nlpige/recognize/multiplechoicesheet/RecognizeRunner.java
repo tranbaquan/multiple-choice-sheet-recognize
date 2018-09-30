@@ -11,7 +11,7 @@ public class RecognizeRunner {
     }
 
     public static void main(String[] args) {
-        String file = "src/main/resources/SheetRecognizeExam.jpg";
+        String file = "src/main/resources/bubbleSheetv3_increase-pixel.jpg";
         SheetRecognize sheetRecognize = new SheetRecognize();
         sheetRecognize.readFile(file);
         sheetRecognize.setQuestionNum(10);
@@ -19,7 +19,7 @@ public class RecognizeRunner {
         sheetRecognize.detectBoundingBox();
         List<Rect> records = sheetRecognize.detectRows();
         List<List<Rect>> allChoices = sheetRecognize.detectBubbles(records);
-        List<Integer> answers = sheetRecognize.recognizeAnswer(allChoices, records);
+        List<List<Integer>> answers = sheetRecognize.recognizeAnswer(allChoices, records);
 
         System.out.println(answers.size());
         for (int i = 0; i < answers.size(); i++) {

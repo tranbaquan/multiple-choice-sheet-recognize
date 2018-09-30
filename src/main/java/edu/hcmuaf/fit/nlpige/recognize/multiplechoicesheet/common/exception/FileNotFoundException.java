@@ -1,22 +1,12 @@
 package edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.exception;
 
 public class FileNotFoundException extends NLPigeException {
+
     public FileNotFoundException() {
+        super(ErrorCode.FILE_NOT_FOUND_EXCEPTION);
     }
 
-    public FileNotFoundException(String message) {
-        super(message);
-    }
-
-    public FileNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public FileNotFoundException(Throwable cause) {
-        super(cause);
-    }
-
-    public FileNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+    public FileNotFoundException(ErrorCode errorCode,Throwable cause) {
+        super(errorCode.name(), cause);
     }
 }

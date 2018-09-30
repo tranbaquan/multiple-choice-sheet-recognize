@@ -1,6 +1,8 @@
 package edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.core;
 
+import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.exception.ErrorCode;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.exception.FileNotFoundException;
+import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.exception.NLPigeException;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.exception.RecognizeException;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.tool.imageviewer.ImageViewer;
 import org.opencv.core.*;
@@ -9,7 +11,9 @@ import org.opencv.imgproc.Imgproc;
 
 import java.util.*;
 
-public class SheetRecognize {
+import static edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.exception.ErrorCode.RECOGNIZE_EXCEPTION;
+
+public class SheetRecognize implements SheetRecognizable{
 
     private Mat input, edged, gray, blurred, thresh;
     private Rect boundingRect;
@@ -27,10 +31,11 @@ public class SheetRecognize {
     public void readFile(String file) {
         this.input = Imgcodecs.imread(file);
         if (input.dataAddr() == 0) {
-            throw new FileNotFoundException("Could not read file");
+            throw new FileNotFoundException();
         }
     }
 
+    @Override
     public void imageProc() {
         gray = new Mat(input.rows(), input.cols(), CvType.CV_8UC3);
         Imgproc.cvtColor(input, gray, Imgproc.COLOR_BGR2GRAY);
@@ -42,38 +47,44 @@ public class SheetRecognize {
         Imgproc.Canny(blurred, edged, 100, 255);
 
         Mat dilated = new Mat(edged.rows(), edged.cols(), CvType.CV_8UC3);
-        Imgproc.dilate(edged, dilated, Imgproc.getStructuringElement(Imgproc.CV_SHAPE_RECT, new Size(5, 5)));
+        Imgproc.dilate(edged, dilated, Imgproc.getStructuringElement(Imgproc.CV_SHAPE_RECT, new Size(3, 3)));
 
         thresh = new Mat(dilated.rows(), dilated.cols(), CvType.CV_8UC3);
         Imgproc.threshold(dilated, thresh, 150, 255, Imgproc.THRESH_BINARY);
     }
 
+    @Override
     public void detectBoundingBox() {
         ArrayList<MatOfPoint> contours = new ArrayList<>();
         Mat hierarchy = new Mat();
         Imgproc.findContours(thresh.clone(), contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
 
-        HashMap<Integer, MatOfPoint> boundingBox = new HashMap<>();
+        HashMap<Integer, MatOfPoint> edgeRects = new HashMap<>();
         MatOfPoint2f approxCurve = new MatOfPoint2f();
         for (int i = 0; i < contours.size(); i++) {
+
             MatOfPoint2f contour2f = new MatOfPoint2f(contours.get(i).toArray());
             double approxDistance = Imgproc.arcLength(contour2f, true) * 0.005;
             Imgproc.approxPolyDP(contour2f, approxCurve, approxDistance, false);
 
             MatOfPoint points = new MatOfPoint(approxCurve.toArray());
             if (points.toArray().length == 4) {
-                boundingBox.put(i, contours.get(i));
+                edgeRects.put(i, contours.get(i));
             }
         }
 
         List<Rect> outerRects = new ArrayList<>();
-        for (Map.Entry<Integer, MatOfPoint> box : boundingBox.entrySet()) {
-            int index = box.getKey();
+        for (Map.Entry<Integer, MatOfPoint> edgeRect : edgeRects.entrySet()) {
+            int index = edgeRect.getKey();
             double[] boxHierarchy = hierarchy.get(0, index);
             if (boxHierarchy[3] == -1) {
                 Rect roi = Imgproc.boundingRect(contours.get(index));
                 outerRects.add(roi);
             }
+        }
+
+        if (outerRects.size() == 0) {
+           throw new RecognizeException();
         }
 
         Rect roi = outerRects.stream().max(Comparator.comparing(rect -> rect.height)).get();
@@ -84,14 +95,15 @@ public class SheetRecognize {
         roi.height -= 4;
 
 //        Imgproc.rectangle(input, new Point(roi.x, roi.y),
-//                new Point(roi.x + roi.width, roi.y + roi.height), new Scalar(255, 0, 0), 3);
-//
-//        imageViewer.show(input);
+//                new Point(roi.x + roi.width, roi.y + roi.height), new Scalar(255, 0, 0), 1);
+
+        imageViewer.show(input);
         boundingRect = roi;
     }
 
+    @Override
     public List<Rect> detectRows() {
-        Mat boundingMat = edged.submat(boundingRect);
+        Mat boundingMat = thresh.submat(boundingRect);
         Mat boundingMat1 = input.submat(boundingRect);
         ArrayList<MatOfPoint> contours = new ArrayList<>();
         Mat hierarchy = new Mat();
@@ -102,15 +114,12 @@ public class SheetRecognize {
         for (MatOfPoint contour : contours) {
             Rect rect = Imgproc.boundingRect(contour);
 
-            int width = rect.width;
-            int height = rect.height;
+            int ratio = rect.width / rect.height;
 
-            int ratio = Math.max(width, height) / Math.min(width, height);
-
-            if (ratio > 10 && ratio < 20) {
+            if (ratio > 10 && ratio < 15) {
                 rows.add(rect);
                 Imgproc.rectangle(boundingMat1, new Point(rect.x, rect.y),
-                        new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(255, 0, 0), 3);
+                        new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(new Random().nextInt(256), new Random().nextInt(256), new Random().nextInt(256)), 1);
             }
         }
 
@@ -118,26 +127,26 @@ public class SheetRecognize {
         rows.sort(Comparator.comparing(rect -> rect.y));
         rows.remove(0);
 
-        if (rows.size() != (questionNum)) {
-            throw new RecognizeException("Can not recognize");
+        if (rows.size() != questionNum) {
+            throw new RecognizeException(RECOGNIZE_EXCEPTION);
         }
 
         return rows;
     }
 
+    @Override
     public List<List<Rect>> detectBubbles(List<Rect> records) {
         Mat bounding = edged.submat(boundingRect);
-
         ImageViewer imageViewer = new ImageViewer();
         imageViewer.show(bounding);
 
-        List<List<Rect>> allOfChoices = new ArrayList<>();
+        List<List<Rect>> recordsChoices = new ArrayList<>();
 
-        for (Rect rect : records) {
-            rect.x += rect.width / 2;
-            rect.width /= 2;
-            Mat mat = bounding.submat(rect);
+        for (Rect recordRect : records) {
+            recordRect.x += recordRect.width / 2;
+            recordRect.width /= 2;
 
+            Mat mat = bounding.submat(recordRect);
             ArrayList<MatOfPoint> contours = new ArrayList<>();
             Mat hierarchy = new Mat();
             Imgproc.findContours(mat, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
@@ -145,42 +154,49 @@ public class SheetRecognize {
             List<Rect> choices = new ArrayList<>();
 
             for (int i = 0; i < contours.size(); i++) {
-                Rect r = Imgproc.boundingRect(contours.get(i));
-                double[] hierarchyBox = hierarchy.get(0, i);
+                Rect choiceRect = Imgproc.boundingRect(contours.get(i));
+                double[] choiceHierarchy = hierarchy.get(0, i);
 
-                int w = r.width;
-                int h = r.height;
-                double ratio = (double) Math.max(w, h) / Math.min(w, h);
+                int w = choiceRect.width;
+                int h = choiceRect.height;
+                double ratio = (double) w / h;
 
-                if (ratio >= 0.9 && ratio <= 1.1 && hierarchyBox[3] == -1) {
-                    choices.add(r);
+                if (ratio >= 0.9 && ratio <= 1.1 && choiceHierarchy[3] == -1) {
+                    choices.add(choiceRect);
                 }
             }
 
             choices.sort(Comparator.comparing(r -> r.x));
-            allOfChoices.add(choices);
+            recordsChoices.add(choices);
         }
 
-        return allOfChoices;
+        return recordsChoices;
     }
 
-    public List<Integer> recognizeAnswer(List<List<Rect>> allOfChoices, List<Rect> records) {
-        List<Integer> answer = new ArrayList<>();
+    @Override
+    public Object recognize() {
+        return null;
+    }
+
+
+    public List<List<Integer>> recognizeAnswer(List<List<Rect>> recordsChoices, List<Rect> records) {
+        List<List<Integer>> answer = new ArrayList<>();
         Mat boundingMat = edged.submat(boundingRect);
         for (int i = 0; i < records.size(); i++) {
             Mat recordMat = boundingMat.submat(records.get(i));
-            List<Rect> choiceOfRecord = allOfChoices.get(i);
+            List<Rect> choiceOfRecord = recordsChoices.get(i);
+            List<Integer> a = new ArrayList<>();
             for (int j = 0; j < choiceOfRecord.size(); j++) {
                 Rect r = choiceOfRecord.get(j);
                 Mat choiceMat = recordMat.submat(r);
 
                 int nonZero = Core.countNonZero(choiceMat);
-                double ratio = (double) nonZero / (Math.pow(r.width/2, 2) * 3.14);
-                if(ratio < 0.3) {
-                    answer.add(j+1);
+                double ratio = (double) nonZero / (Math.pow(r.width / 2, 2) * 3.14);
+                if (ratio < 0.3) {
+                    a.add(j + 1);
                 }
             }
-            imageViewer.show(recordMat);
+            answer.add(a);
         }
 
         return answer;

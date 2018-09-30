@@ -4,8 +4,8 @@ public class NLPigeException extends RuntimeException {
     public NLPigeException() {
     }
 
-    public NLPigeException(String message) {
-        super(message);
+    public NLPigeException(ErrorCode errorCode) {
+        super(errorCode.name());
     }
 
     public NLPigeException(String message, Throwable cause) {
