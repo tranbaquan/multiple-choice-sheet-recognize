@@ -1,11 +1,15 @@
 package edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.exception;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class NLPigeException extends RuntimeException {
-    public NLPigeException() {
-    }
+
+    private static final Log log = LogFactory.getLog(NLPigeException.class);
 
     public NLPigeException(ErrorCode errorCode) {
         super(errorCode.name());
+        log.error(errorCode.toString());
     }
 
     public NLPigeException(String message, Throwable cause) {
@@ -16,7 +20,4 @@ public class NLPigeException extends RuntimeException {
         super(cause);
     }
 
-    public NLPigeException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 }

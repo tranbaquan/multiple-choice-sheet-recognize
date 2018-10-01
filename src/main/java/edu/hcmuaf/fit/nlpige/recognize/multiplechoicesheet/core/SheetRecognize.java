@@ -1,10 +1,8 @@
 package edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.core;
 
-import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.exception.ErrorCode;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.exception.FileNotFoundException;
-import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.exception.NLPigeException;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.exception.RecognizeException;
-import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.tool.imageviewer.ImageViewer;
+//import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.tool.imageviewer.ImageViewer;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
@@ -18,7 +16,7 @@ public class SheetRecognize implements SheetRecognizable{
     private Mat input, edged, gray, blurred, thresh;
     private Rect boundingRect;
     private int questionNum;
-    private ImageViewer imageViewer = new ImageViewer();
+//    private ImageViewer imageViewer = new ImageViewer();
 
     public int getQuestionNum() {
         return this.questionNum;
@@ -97,7 +95,7 @@ public class SheetRecognize implements SheetRecognizable{
 //        Imgproc.rectangle(input, new Point(roi.x, roi.y),
 //                new Point(roi.x + roi.width, roi.y + roi.height), new Scalar(255, 0, 0), 1);
 
-        imageViewer.show(input);
+//        imageViewer.show(input);
         boundingRect = roi;
     }
 
@@ -123,7 +121,7 @@ public class SheetRecognize implements SheetRecognizable{
             }
         }
 
-        imageViewer.show(boundingMat1);
+//        imageViewer.show(boundingMat1);
         rows.sort(Comparator.comparing(rect -> rect.y));
         rows.remove(0);
 
@@ -137,8 +135,8 @@ public class SheetRecognize implements SheetRecognizable{
     @Override
     public List<List<Rect>> detectBubbles(List<Rect> records) {
         Mat bounding = edged.submat(boundingRect);
-        ImageViewer imageViewer = new ImageViewer();
-        imageViewer.show(bounding);
+//        ImageViewer imageViewer = new ImageViewer();
+//        imageViewer.show(bounding);
 
         List<List<Rect>> recordsChoices = new ArrayList<>();
 
