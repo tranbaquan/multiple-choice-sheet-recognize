@@ -8,8 +8,8 @@ public class NLPigeException extends RuntimeException {
     private static final Log log = LogFactory.getLog(NLPigeException.class);
 
     public NLPigeException(ErrorCode errorCode) {
-        super(errorCode.name());
-        log.error(errorCode.toString());
+        super(errorCode.getMessage());
+        log.error(errorCode.getMessage());
     }
 
     public NLPigeException(String message, Throwable cause) {

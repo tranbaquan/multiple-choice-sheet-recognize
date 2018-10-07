@@ -10,4 +10,8 @@ public enum ErrorCode {
     ErrorCode(String message) {
         this.message = message;
     }
+
+    public String getMessage() {
+        return message;
+    }
 }
