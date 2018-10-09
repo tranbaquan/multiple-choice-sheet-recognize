@@ -14,10 +14,13 @@ public class NLPigeException extends RuntimeException {
 
     public NLPigeException(String message, Throwable cause) {
         super(message, cause);
+        log.error(message);
+        log.error(cause.getMessage());
     }
 
     public NLPigeException(Throwable cause) {
         super(cause);
+        log.error(cause.getMessage());
     }
 
 }

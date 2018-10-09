@@ -2,6 +2,7 @@ package edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.core;
 
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.exception.FileNotFoundException;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.exception.RecognizeException;
+import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.logging.Logger;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.types.MatType;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.types.PaperType;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.types.RationConst;
@@ -14,9 +15,7 @@ import org.opencv.imgproc.Imgproc;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.exception.ErrorCode.RECOGNIZE_EXCEPTION;
-
-public class SheetRecognize implements SheetRecognizable {
+public class SheetRecognize extends Logger implements SheetRecognizable {
 
     private final ImageViewer imageViewer = new ImageViewer();
     private Mat input, edged, thresh;
@@ -30,6 +29,12 @@ public class SheetRecognize implements SheetRecognizable {
         initRatio();
     }
 
+    public SheetRecognize(int questionNum, PaperType paperType) {
+        this.questionNum = questionNum;
+        this.paperType = paperType;
+        initRatio();
+    }
+
     private void initRatio() {
         switch (paperType){
             case A4:
@@ -39,11 +44,6 @@ public class SheetRecognize implements SheetRecognizable {
                 avgRatio = RationConst.A5_RATION_DEFAULT;
                 break;
         }
-    }
-
-    public SheetRecognize(int questionNum, PaperType paperType) {
-        this.questionNum = questionNum;
-        this.paperType = paperType;
     }
 
     public int getQuestionNum() {
@@ -63,6 +63,7 @@ public class SheetRecognize implements SheetRecognizable {
     }
 
     public void readFile(String file) {
+        log.info("Reading " + file);
         this.input = Imgcodecs.imread(file);
         if (input.dataAddr() == 0) {
             throw new FileNotFoundException();
@@ -82,6 +83,8 @@ public class SheetRecognize implements SheetRecognizable {
         Mat dilated = MatConverter.convertMat(edged, MatType.DILATE, paperType);
 
         thresh = MatConverter.convertMat(dilated, MatType.THRESHOLD, paperType);
+
+        imageViewer.show(thresh);
     }
 
     @Override
@@ -129,19 +132,8 @@ public class SheetRecognize implements SheetRecognizable {
         Imgproc.rectangle(input, new Point(roi.x, roi.y),
                 new Point(roi.x + roi.width, roi.y + roi.height), new Scalar(255, 0, 0), 3);
 
-        imageViewer.show(input);
+//        imageViewer.show(input);
         boundingRect = roi;
-    }
-
-    public void rectTransform(Rect rect) {
-        Point tl = new Point(rect.x, rect.y);
-        Point tr = new Point(rect.x + rect.width, rect.y);
-        Point bl = new Point(rect.x, rect.y + rect.height);
-        Point br = new Point(rect.x + rect.width, rect.y + rect.height);
-
-        MatOfPoint2f src = new MatOfPoint2f(tl, tr, br, bl);
-        MatOfPoint2f dest = new MatOfPoint2f(new Point(0, 0), new Point(0, rect.width),
-                new Point(rect.width, rect.height), new Point(rect.height, 0));
     }
 
     @Override
@@ -155,8 +147,8 @@ public class SheetRecognize implements SheetRecognizable {
 
         List<Rect> rows = new ArrayList<>();
 
-        for (int i = 0; i < contours.size(); i++) {
-            Rect rect = Imgproc.boundingRect(contours.get(i));
+        for (MatOfPoint contour : contours) {
+            Rect rect = Imgproc.boundingRect(contour);
             int ratio = rect.width / rect.height;
             if (ratio > 10 && ratio < 15) {
                 rows.add(rect);
@@ -167,10 +159,10 @@ public class SheetRecognize implements SheetRecognizable {
 
         rows.sort(Comparator.comparing(rect -> rect.y));
         rows.remove(0);
-        imageViewer.show(input);
+//        imageViewer.show(input);
 
         if (rows.size() != questionNum) {
-            throw new RecognizeException(RECOGNIZE_EXCEPTION);
+            throw new RecognizeException();
         }
 
         return rows;
@@ -185,8 +177,8 @@ public class SheetRecognize implements SheetRecognizable {
         for (Rect recordRect : records) {
             recordRect.x += recordRect.width / 2;
             recordRect.width /= 2;
-            Mat mat = edged.submat(recordRect);
 
+            Mat mat = edged.submat(recordRect);
             ArrayList<MatOfPoint> contours = new ArrayList<>();
             Mat hierarchy = new Mat();
             Imgproc.findContours(mat, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
@@ -218,6 +210,7 @@ public class SheetRecognize implements SheetRecognizable {
 
     @Override
     public Object recognize() {
+        log.info("Processing...");
         imageProc();
         detectBoundingBox();
         List<Rect> records = detectRows();
@@ -229,7 +222,6 @@ public class SheetRecognize implements SheetRecognizable {
     private List<List<Integer>> recognizeAnswer(List<List<Rect>> recordsChoices, List<Rect> records) {
         List<List<Integer>> answer = new ArrayList<>();
         for (int i = 0; i < records.size(); i++) {
-
             Mat recordMat = edged.submat(records.get(i));
             List<Rect> choiceOfRecord = recordsChoices.get(i);
             List<Integer> recordAnswers = new ArrayList<>();
@@ -244,6 +236,7 @@ public class SheetRecognize implements SheetRecognizable {
             }
             answer.add(recordAnswers);
         }
+        log.info("Done!");
         return answer;
     }
 

@@ -1,14 +1,25 @@
 package edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.utils;
 
+import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.logging.Logger;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.types.MatType;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.types.PaperType;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
-public class MatConverter {
+public class MatConverter extends Logger {
 
     public static Mat convertMat(Mat input, MatType outputType, PaperType paperType){
+        if(outputType == null) {
+            log.error("Output type is null", new NullPointerException());
+            throw new NullPointerException();
+        }
+
+        if (paperType == null) {
+            log.error("Paper type is null", new NullPointerException());
+            throw new NullPointerException();
+        }
+
         Mat output = new Mat(input.size(), input.type());
         switch (outputType){
             case GRAY:
@@ -31,6 +42,11 @@ public class MatConverter {
     }
 
     public static void scaleImage(Mat input, PaperType paperType){
+        if (paperType == null) {
+            log.error("Paper type is null", new NullPointerException());
+            throw new NullPointerException();
+        }
+
         int width = paperType.getWidth();
         int height = width*input.rows()/input.cols();
         Imgproc.resize(input, input, new Size(width, height));
