@@ -1,0 +1,8 @@
+<body>
+<div class="wrapper">
+    <div class="header">
+        <div>
+            <div class="logo">
+            %s
+        </div>
+    </div>

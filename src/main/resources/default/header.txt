@@ -1,0 +1,7 @@
+title: ĐẠI HỘI CỔ ĐÔNG THƯỜNG NIÊN NĂM 2018
+title: NGÂN HÀNG TMCP PHÁT TRIỂN
+title: THÀNH PHỐ HỒ CHÍ MINH
+paperName: PHIẾU BẦU CỬ
+subTitle: THÀNH VIÊN HỘI ĐỒNG QUẢN TRỊ
+subTitle: NHIỆM KỲ 2018-2023
+logo: src/main/resources/images/logo.jpg

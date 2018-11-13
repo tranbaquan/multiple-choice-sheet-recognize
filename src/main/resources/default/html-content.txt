@@ -1,0 +1,15 @@
+<div class="content">
+         <div class="table">
+             <table>
+                 <tr>
+                     <td class="left">Tên Ứng Cử Viên</td>
+                     <td class="right" style="text-align: center">Hệ Số Biểu Quyết</td>
+                 </tr>
+                %s
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

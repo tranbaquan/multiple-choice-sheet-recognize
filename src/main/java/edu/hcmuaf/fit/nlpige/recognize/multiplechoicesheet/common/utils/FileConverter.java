@@ -25,7 +25,7 @@ public class FileConverter {
             case "pdf":
                 PDDocument document = PDDocument.load(file);
                 PDFRenderer pdfRenderer = new PDFRenderer(document);
-                BufferedImage bim = pdfRenderer.renderImageWithDPI(0, 300, ImageType.RGB);
+                BufferedImage bim = pdfRenderer.renderImageWithDPI(0, 500, ImageType.RGB);
                 File output = new File(file.getPath() + "abc.png");
                 ImageIO.write(bim, "png", output);
                 return output.getPath();

@@ -1,4 +1,4 @@
-package edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.tool.imageviewer;
+package edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.tool.viewer.image;
 
 import java.awt.*;
 import java.awt.image.*;

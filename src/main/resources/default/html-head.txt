@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>BubbleSheet</title>
+    <style type="text/css">
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .wrapper {
+            width: 100%;
+        }
+
+        .header {
+            width: 100%;
+            height: auto;
+        }
+
+        .header > div {
+            width: 100%;
+            height: auto;
+        }
+
+        .logo {
+            width: 25%;
+            height: auto;
+            float: left;
+        }
+
+        .qr-code {
+            width: 150px;
+            height: auto;
+            float: right;
+        }
+
+        .title {
+            width: 100%;
+            text-align: center;
+        }
+
+        .title > h3 {
+            align-content: center;
+            margin: 5px;
+            line-height: 80%;
+        }
+
+        .normal-title {
+            font-size: 18px;
+            font-weight: normal;
+        }
+
+        .small-title {
+            font-size: 16px;
+            font-weight: 300;
+        }
+
+        .nameSheet {
+            font-size: 40px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        .content {
+            width: 100%;
+            padding: 20px 50px;
+        }
+
+        .table {
+            width: 100%;
+        }
+
+        .table table {
+            border-collapse: collapse;
+            border: 2px solid #000;
+        }
+
+        .table tr {
+            height: 40px;
+            width: 100%;
+        }
+
+        .table td {
+            border: 0px solid #fff;
+            border-bottom: 2px solid #000;
+        }
+
+        .last-child > td {
+            border-bottom: 0px !important;
+        }
+
+        .table .left {
+            padding-left: 10px;
+            text-align: left;
+        }
+
+        .table .right {
+            padding-right: 10px;
+            text-align: right;
+        }
+
+        .bubble {
+            clear: left;
+            float: right;
+            width: 15px;
+            height: 15px;
+        }
+
+        .span {
+            font-size: 10px;
+        }
+
+    </style>
+</head>

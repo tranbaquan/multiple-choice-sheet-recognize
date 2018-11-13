@@ -7,7 +7,7 @@ import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.types.MatType;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.types.PaperType;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.types.RationConst;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.utils.MatConverter;
-import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.tool.imageviewer.ImageViewer;
+import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.tool.viewer.image.ImageViewer;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
@@ -36,7 +36,7 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
     }
 
     private void initRatio() {
-        switch (paperType){
+        switch (paperType) {
             case A4:
                 avgRatio = RationConst.A4_RATION_DEFAULT;
                 break;
@@ -85,6 +85,7 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
         thresh = MatConverter.convertMat(dilated, MatType.THRESHOLD, paperType);
 
         imageViewer.show(thresh);
+        imageViewer.show(thresh, "E");
     }
 
     @Override
@@ -129,9 +130,9 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
         roi.width -= 4;
         roi.height -= 4;
 
-        Imgproc.rectangle(input, new Point(roi.x, roi.y),
-                new Point(roi.x + roi.width, roi.y + roi.height), new Scalar(255, 0, 0), 3);
-
+//        Imgproc.rectangle(input, new Point(roi.x, roi.y),
+//                new Point(roi.x + roi.width, roi.y + roi.height), new Scalar(255, 0, 0), 3);
+//
 //        imageViewer.show(input);
         boundingRect = roi;
     }
@@ -150,7 +151,7 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
         for (MatOfPoint contour : contours) {
             Rect rect = Imgproc.boundingRect(contour);
             int ratio = rect.width / rect.height;
-            if (ratio > 10 && ratio < 15) {
+            if (ratio > 15 && ratio < 20) {
                 rows.add(rect);
                 Imgproc.rectangle(input, new Point(rect.x, rect.y),
                         new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(new Random().nextInt(256), new Random().nextInt(256), new Random().nextInt(256)), 2);
@@ -159,7 +160,8 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
 
         rows.sort(Comparator.comparing(rect -> rect.y));
         rows.remove(0);
-//        imageViewer.show(input);
+        imageViewer.show(input);
+        System.out.println(rows.size());
 
         if (rows.size() != questionNum) {
             throw new RecognizeException();
@@ -175,8 +177,8 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
 
         List<List<Rect>> recordsChoices = new ArrayList<>();
         for (Rect recordRect : records) {
-            recordRect.x += recordRect.width / 2;
-            recordRect.width /= 2;
+            recordRect.x += recordRect.width * 1 / 3;
+            recordRect.width = recordRect.width * 2 / 3;
 
             Mat mat = edged.submat(recordRect);
             ArrayList<MatOfPoint> contours = new ArrayList<>();
@@ -202,6 +204,7 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
                     .sorted(Comparator.comparing(r -> r.x))
                     .collect(Collectors.toList());
 
+            System.out.println(choices.size());
             recordsChoices.add(choices);
         }
 
@@ -225,15 +228,30 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
             Mat recordMat = edged.submat(records.get(i));
             List<Rect> choiceOfRecord = recordsChoices.get(i);
             List<Integer> recordAnswers = new ArrayList<>();
+            double avg = 0;
+            List<Integer> counters = new ArrayList<>();
             for (int j = 0; j < choiceOfRecord.size(); j++) {
                 Rect r = choiceOfRecord.get(j);
                 Mat choiceMat = recordMat.submat(r);
                 int nonZero = Core.countNonZero(choiceMat);
-                double ratio = (double) nonZero / (Math.pow(r.width / 2, 2) * 3.14);
-                if (ratio < avgRatio) {
-                    recordAnswers.add(j + 1);
+                counters.add(nonZero);
+                avg += nonZero;
+//                double ratio = (double) nonZero / (Math.pow(r.width / 2, 2) * 3.14);
+//                if (ratio < avgRatio) {
+//                    recordAnswers.add(j + 1);
+//                }
+            }
+            avg /= choiceOfRecord.size();
+            int lowest = counters.stream().min(Comparator.comparing(value -> value)).get();
+            for (int j = 0; j < counters.size(); j++) {
+//                if(counters.get(j) < avg && (counters.get(j) / lowest) <= 1.1) {
+//                    recordAnswers.add(j+1);
+//                }
+                if(lowest == counters.get(j)) {
+                    recordAnswers.add(j+1);
                 }
             }
+
             answer.add(recordAnswers);
         }
         log.info("Done!");
