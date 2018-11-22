@@ -6,16 +6,4 @@ public class RecognizeException extends NLPigeException {
         super(ErrorCode.RECOGNIZE_EXCEPTION);
     }
 
-    public RecognizeException(ErrorCode message) {
-        super(message);
-    }
-
-    public RecognizeException(ErrorCode message, Throwable cause) {
-        super(message.name(), cause);
-    }
-
-    public RecognizeException(Throwable cause) {
-        super(cause);
-    }
-
 }

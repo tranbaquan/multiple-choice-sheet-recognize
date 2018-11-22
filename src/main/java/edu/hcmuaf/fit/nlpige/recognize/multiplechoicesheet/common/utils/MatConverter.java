@@ -12,12 +12,12 @@ public class MatConverter extends Logger {
     public static Mat convertMat(Mat input, MatType outputType, PaperType paperType){
         if(outputType == null) {
             log.error("Output type is null", new NullPointerException());
-            throw new NullPointerException();
+            throw new NullPointerException("Output type is null");
         }
 
         if (paperType == null) {
             log.error("Paper type is null", new NullPointerException());
-            throw new NullPointerException();
+            throw new NullPointerException("Paper type is null");
         }
 
         Mat output = new Mat(input.size(), input.type());
@@ -44,7 +44,7 @@ public class MatConverter extends Logger {
     public static void scaleImage(Mat input, PaperType paperType){
         if (paperType == null) {
             log.error("Paper type is null", new NullPointerException());
-            throw new NullPointerException();
+            throw new NullPointerException("Paper type is null");
         }
 
         int width = paperType.getWidth();

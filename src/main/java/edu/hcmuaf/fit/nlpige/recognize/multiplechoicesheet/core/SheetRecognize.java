@@ -17,6 +17,10 @@ import java.util.stream.Collectors;
 
 public class SheetRecognize extends Logger implements SheetRecognizable {
 
+    static {
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    }
+
     private final ImageViewer imageViewer = new ImageViewer();
     private Mat input, edged, thresh;
     private Rect boundingRect;
@@ -85,7 +89,6 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
         thresh = MatConverter.convertMat(dilated, MatType.THRESHOLD, paperType);
 
         imageViewer.show(thresh);
-        imageViewer.show(thresh, "E");
     }
 
     @Override
@@ -129,12 +132,10 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
         roi.y += 2;
         roi.width -= 4;
         roi.height -= 4;
-
-//        Imgproc.rectangle(input, new Point(roi.x, roi.y),
-//                new Point(roi.x + roi.width, roi.y + roi.height), new Scalar(255, 0, 0), 3);
-//
-//        imageViewer.show(input);
         boundingRect = roi;
+
+//        Imgproc.rectangle(input, new Point(roi.x, roi.y), new Point(roi.x + roi.width, roi.y + roi.height), new Scalar(0, 255, 0), 2);
+//        imageViewer.show(input);
     }
 
     @Override
@@ -153,20 +154,15 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
             int ratio = rect.width / rect.height;
             if (ratio > 15 && ratio < 20) {
                 rows.add(rect);
-                Imgproc.rectangle(input, new Point(rect.x, rect.y),
-                        new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(new Random().nextInt(256), new Random().nextInt(256), new Random().nextInt(256)), 2);
             }
         }
 
         rows.sort(Comparator.comparing(rect -> rect.y));
         rows.remove(0);
-        imageViewer.show(input);
-        System.out.println(rows.size());
 
         if (rows.size() != questionNum) {
             throw new RecognizeException();
         }
-
         return rows;
     }
 
@@ -174,7 +170,6 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
     @Override
     public List<List<Rect>> detectBubbles(List<Rect> records) {
         edged = edged.submat(boundingRect);
-
         List<List<Rect>> recordsChoices = new ArrayList<>();
         for (Rect recordRect : records) {
             recordRect.x += recordRect.width * 1 / 3;
@@ -203,8 +198,6 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
                     .filter(r -> r.height > 5 && r.width > 5)
                     .sorted(Comparator.comparing(r -> r.x))
                     .collect(Collectors.toList());
-
-            System.out.println(choices.size());
             recordsChoices.add(choices);
         }
 
@@ -236,26 +229,20 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
                 int nonZero = Core.countNonZero(choiceMat);
                 counters.add(nonZero);
                 avg += nonZero;
-//                double ratio = (double) nonZero / (Math.pow(r.width / 2, 2) * 3.14);
-//                if (ratio < avgRatio) {
-//                    recordAnswers.add(j + 1);
-//                }
             }
             avg /= choiceOfRecord.size();
             int lowest = counters.stream().min(Comparator.comparing(value -> value)).get();
             for (int j = 0; j < counters.size(); j++) {
-//                if(counters.get(j) < avg && (counters.get(j) / lowest) <= 1.1) {
+//                if(counters.get(j) < avg && (counters.get(j) / lowest) <= 1.05) {
 //                    recordAnswers.add(j+1);
 //                }
-                if(lowest == counters.get(j)) {
-                    recordAnswers.add(j+1);
+                if (counters.get(j) == lowest) {
+                    recordAnswers.add(j + 1);
                 }
             }
-
             answer.add(recordAnswers);
         }
         log.info("Done!");
         return answer;
     }
-
 }

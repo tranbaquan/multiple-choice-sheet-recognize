@@ -7,9 +7,6 @@ import org.opencv.core.*;
 import java.util.List;
 
 public class RecognizeRunner {
-    static {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-    }
 
     public static void main(String[] args) {
 //        long current = System.currentTimeMillis();
