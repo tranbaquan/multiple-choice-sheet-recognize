@@ -2,7 +2,6 @@ package edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet;
 
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.types.PaperType;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.core.SheetRecognize;
-import org.opencv.core.*;
 
 import java.util.List;
 
@@ -12,10 +11,10 @@ public class RecognizeRunner {
 //        long current = System.currentTimeMillis();
 //
 //        for (int i = 0; i < 500; i++) {
-            String file = "src/main/resources/images/1.jpg";
+            String file = "src/main/resources/images/form-4.png";
             SheetRecognize sheetRecognize = new SheetRecognize();
             sheetRecognize.readFile(file);
-            sheetRecognize.setQuestionNum(15);
+            sheetRecognize.setQuestionNum(13);
             sheetRecognize.setPaperType(PaperType.A4);
             List<List<Integer>> answers = (List<List<Integer>>) sheetRecognize.recognize();
 

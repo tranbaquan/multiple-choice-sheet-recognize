@@ -37,6 +37,8 @@ public class MatConverter extends Logger {
             case GAUSSIANBLUR:
                 blur(input, output, paperType);
                 break;
+            case HSV:
+                Imgproc.cvtColor(input, output, Imgproc.COLOR_BGR2HSV);
         }
         return output;
     }

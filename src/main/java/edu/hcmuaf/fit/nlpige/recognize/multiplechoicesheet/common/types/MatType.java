@@ -5,5 +5,6 @@ public enum MatType {
     GAUSSIANBLUR,
     CANNY,
     DILATE,
-    THRESHOLD
+    THRESHOLD,
+    HSV
 }

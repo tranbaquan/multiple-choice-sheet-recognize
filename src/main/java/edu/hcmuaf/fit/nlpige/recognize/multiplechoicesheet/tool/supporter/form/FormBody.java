@@ -1,54 +1,49 @@
 package edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.tool.supporter.form;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class FormBody {
-    private List<String> candidates;
+    private String[] candidates;
 
-    public FormBody() {
-        this.candidates = new ArrayList<>();
-    }
-
-    public FormBody(List<String> candidates) {
+    public FormBody(String[] candidates) {
         this.candidates = candidates;
-    }
-
-    public List<String> getCandidates() {
-        return candidates;
-    }
-
-    public void setCandidates(List<String> candidates) {
-        this.candidates = candidates;
-    }
-
-    public void addCandidate(String candidate) {
-        this.candidates.add(candidate);
     }
 
     public String getHtml() {
-        StringBuffer buffer = new StringBuffer();
-        int size = candidates.size();
 
+        if(candidates == null || candidates.length == 0) {
+            return "";
+        }
+
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("<div class=\"content\">\n");
+        builder.append("<div class=\"table\">\n");
+        builder.append("<table>\n");
+        builder.append("<tr>\n");
+        builder.append("<td class=\"left\">Tên Ứng Cử Viên</td>\n");
+        builder.append("<td class=\"right\" style=\"text-align: center\">Hệ Số Biểu Quyết</td>\n");
+        builder.append("</tr>\n");
+
+        int size = candidates.length;
         for (int i = 0; i < size - 1; i++) {
-            buffer.append("<tr>\n");
-            buffer.append(String.format("<td class=\"left\">%s</td>\n", candidates.get(i)));
-            buffer.append("<td class=\"right\">\n");
+            builder.append("<tr>\n");
+            builder.append(String.format("<td class=\"left\">%s</td>\n", (i+1) + ". " + candidates[i]));
+            builder.append("<td class=\"right\">\n");
             for (int j = 1; j < size + 1; j++) {
-                buffer.append(String.format("<img class=\"bubble\" src=\"src/main/resources/icons/%s.png\" alt=\"\"/>\n", j));
-                buffer.append("<span class=\"span\">&nbsp;</span>\n");
+                builder.append(String.format("<img class=\"bubble\" src=\"src/main/resources/icons/%s.png\" alt=\"\"/>\n", j));
+                builder.append("<span class=\"span\">&nbsp;</span>\n");
             }
-            buffer.append("</td>\n</tr>\n");
+            builder.append("</td>\n</tr>\n");
         }
 
-        buffer.append("<tr class=\"last-child\">\n");
-        buffer.append(String.format("<td class=\"left\">%s</td>\n", candidates.get(size-1)));
-        buffer.append("<td class=\"right\">\n");
+        builder.append("<tr class=\"last-child\">\n");
+        builder.append(String.format("<td class=\"left\">%s</td>\n", size + ". " +  candidates[size-1]));
+        builder.append("<td class=\"right\">\n");
         for (int j = 1; j < size + 1; j++) {
-            buffer.append(String.format("<img class=\"bubble\" src=\"src/main/resources/icons/%s.png\" alt=\"\"/>\n", j));
-            buffer.append("<span class=\"span\">&nbsp;</span>\n");
+            builder.append(String.format("<img class=\"bubble\" src=\"src/main/resources/icons/%s.png\" alt=\"\"/>\n", j));
+            builder.append("<span class=\"span\">&nbsp;</span>\n");
         }
-        buffer.append("</td>\n</tr>\n");
-        return buffer.toString();
+        builder.append("</td>\n</tr>\n");
+        builder.append(" </table>\n</div>\n</div>\n</div>\n</body>\n</html>");
+        return builder.toString();
     }
 }

@@ -100,23 +100,24 @@
         .table .left {
             padding-left: 10px;
             text-align: left;
+            font-size: 13px;
         }
 
         .table .right {
             padding-right: 10px;
             text-align: right;
+            font-size: 13px;
         }
 
         .bubble {
             clear: left;
             float: right;
-            width: 20px;
-            height: 20px;
+            width: 17px;
+            height: 17px;
         }
 
         .span {
             font-size: 10px;
         }
-
     </style>
 </head>

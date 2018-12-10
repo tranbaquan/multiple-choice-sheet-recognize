@@ -1,85 +1,62 @@
 package edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.tool.supporter.form;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class FormHeader {
-    private List<String> title;
-    private String paperName;
-    private String logo;
-    private String qrCode;
-    private List<String> subTitle;
+    private int year;
+    private String term;
+    private String board;
 
-    public FormHeader() {
-        this.title = new ArrayList<>();
-        this.subTitle = new ArrayList<>();
+    public FormHeader(int year, String term, String board) {
+        this.year = year;
+        this.term = term;
+        this.board = board;
     }
 
-    public List<String> getTitle() {
-        return title;
+    public int getYear() {
+        return year;
     }
 
-    public void setTitle(List<String> title) {
-        this.title = title;
+    public void setYear(int year) {
+        this.year = year;
     }
 
-    public String getPaperName() {
-        return paperName;
+    public String getTerm() {
+        return term;
     }
 
-    public void setPaperName(String paperName) {
-        this.paperName = paperName;
+    public void setTerm(String term) {
+        this.term = term;
     }
 
-    public String getLogo() {
-        return logo;
+    public String getBoard() {
+        return board;
     }
 
-    public void setLogo(String logo) {
-        this.logo = logo;
-    }
-
-    public String getQrCode() {
-        return qrCode;
-    }
-
-    public void setQrCode(String qrCode) {
-        this.qrCode = qrCode;
-    }
-
-    public List<String> getSubTitle() {
-        return subTitle;
-    }
-
-    public void setSubTitle(List<String> subTitle) {
-        this.subTitle = subTitle;
-    }
-
-    public void addTitle(String title){
-        this.title.add(title);
-    }
-
-    public void addSubTitle(String subTitle) {
-        this.subTitle.add(subTitle);
+    public void setBoard(String board) {
+        this.board = board;
     }
 
     public String getHtml() {
         StringBuilder builder = new StringBuilder();
-        builder.append(String.format("<img src=\"%s\" alt=\"\"/>\n", logo));
+        builder.append("<body>\n");
+        builder.append("<div class=\"wrapper\">\n");
+        builder.append("<div class=\"header\">\n");
+        builder.append("<div>\n");
+        builder.append("<div class=\"logo\">\n");
+        builder.append("<img src=\"src/main/resources/images/logo.jpg\" alt=\"\"/>\n");
         builder.append("</div>\n");
         builder.append("<div class=\"qr-code\">\n");
         builder.append("<img src=\"%s\" alt=\"\"/>\n");
-        builder.append("</div>\n</div>\n");
-        builder.append("<div class=\"title\">");
-        for (String t: title) {
-            builder.append(String.format("<h3 class=\"normal-title\">%s</h3>", t));
-            builder.append("\n");
-        }
-        builder.append(String.format("<h1 class=\"nameSheet\">%s</h1>", paperName));
-        for (String st: subTitle) {
-            builder.append(String.format("<h3 class=\"small-title\">%s</h3>", st));
-            builder.append("\n");
-        }
+        builder.append("</div>\n");
+        builder.append("</div>\n");
+        builder.append("<div class=\"title\">\n");
+        builder.append(String.format("<h3 class=\"normal-title\">ĐẠI HỘI CỔ ĐÔNG THƯỜNG NIÊN NĂM %s</h3>\n", year));
+        builder.append("<h3 class=\"normal-title\">NGÂN HÀNG TMCP PHÁT TRIỂN</h3>\n");
+        builder.append("<h3 class=\"normal-title\">THÀNH PHỐ HỒ CHÍ MINH</h3>\n");
+        builder.append("<h1 class=\"nameSheet\">PHIẾU BẦU CỬ</h1>\n");
+        builder.append(String.format("<h3 class=\"small-title\">THÀNH VIÊN %s</h3>\n", board));
+        builder.append(String.format("<h3 class=\"small-title\">NHIỆM KỲ %s</h3>\n", term));
+        builder.append("</div>\n");
+        builder.append("</div>\n");
         return builder.toString();
     }
 }

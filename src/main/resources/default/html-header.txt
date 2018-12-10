@@ -3,6 +3,18 @@
     <div class="header">
         <div>
             <div class="logo">
-            %s
+                <img src="src/main/resources/images/logo.jpg" alt=""/>
+            </div>
+            <div class="qr-code">
+                <img src="%s" alt=""/>
+            </div>
+        </div>
+        <div class="title">
+            <h3 class="normal-title">ĐẠI HỘI CỔ ĐÔNG THƯỜNG NIÊN NĂM 2018</h3>
+            <h3 class="normal-title">NGÂN HÀNG TMCP PHÁT TRIỂN</h3>
+            <h3 class="normal-title">THÀNH PHỐ HỒ CHÍ MINH</h3>
+            <h1 class="nameSheet">PHIẾU BẦU CỬ</h1>
+            <h3 class="small-title">THÀNH VIÊN HỘI ĐỒNG QUẢN TRỊ</h3>
+            <h3 class="small-title">NHIỆM KỲ 2018-2023</h3>
         </div>
     </div>
