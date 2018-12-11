@@ -26,29 +26,16 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
     private Rect boundingRect;
     private int questionNum;
     private PaperType paperType;
-    private double avgRatio;
 
     public SheetRecognize() {
         this.paperType = PaperType.A4;
-        initRatio();
     }
 
     public SheetRecognize(int questionNum, PaperType paperType) {
         this.questionNum = questionNum;
         this.paperType = paperType;
-        initRatio();
     }
 
-    private void initRatio() {
-        switch (paperType) {
-            case A4:
-                avgRatio = RationConst.A4_RATION_DEFAULT;
-                break;
-            case A5:
-                avgRatio = RationConst.A5_RATION_DEFAULT;
-                break;
-        }
-    }
 
     public int getQuestionNum() {
         return this.questionNum;
@@ -79,19 +66,8 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
         MatConverter.scaleImage(input, paperType);
 
         Mat hsv = MatConverter.convertMat(input, MatType.HSV, paperType);
-        imageViewer.show(hsv);
-        boolean isLogo = false;
-        label: for (int i = 0; i < 100; i++){
-            for (int j = 0; j < 300; j++) {
-                if(hsv.get(i, j)[2] > 15 && hsv.get(i, j)[2] < 45) {
-                    isLogo = true;
-                    break label;
-                }
-            }
-        }
-        if(!isLogo) {
-            Core.rotate(input, input, Core.ROTATE_180);
-        }
+
+        MatConverter.rotate(input, hsv);
 
         Mat gray = MatConverter.convertMat(input, MatType.GRAY, paperType);
 
@@ -102,8 +78,6 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
         Mat dilated = MatConverter.convertMat(edged, MatType.DILATE, paperType);
 
         thresh = MatConverter.convertMat(dilated, MatType.THRESHOLD, paperType);
-
-        imageViewer.show(thresh);
     }
 
     @Override
@@ -162,8 +136,8 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
         roi.height -= 4;
         boundingRect = roi;
 
-        Imgproc.rectangle(input, new Point(roi.x, roi.y), new Point(roi.x + roi.width, roi.y + roi.height), new Scalar(0, 255, 0), 2);
-        imageViewer.show(input);
+//        Imgproc.rectangle(input, new Point(roi.x, roi.y), new Point(roi.x + roi.width, roi.y + roi.height), new Scalar(0, 255, 0), 2);
+//        imageViewer.show(input);
     }
 
     @Override
@@ -182,15 +156,15 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
             int ratio = rect.width / rect.height;
             if (ratio > 10 && ratio < 20) {
                 rows.add(rect);
-                Imgproc.rectangle(input, new Point(rect.x, rect.y),
-                        new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0), 2);
+//                Imgproc.rectangle(input, new Point(rect.x, rect.y),
+//                        new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0), 2);
             }
         }
-        imageViewer.show(input);
+//        imageViewer.show(input);
         rows.sort(Comparator.comparing(rect -> rect.y));
         rows.remove(0);
 
-        System.out.println(rows.size());
+//        System.out.println(rows.size());
 
         if (rows.size() != questionNum) {
             throw new RecognizeException();

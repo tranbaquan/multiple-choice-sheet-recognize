@@ -3,6 +3,7 @@ package edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.utils;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.logging.Logger;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.types.MatType;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.types.PaperType;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
@@ -41,6 +42,21 @@ public class MatConverter extends Logger {
                 Imgproc.cvtColor(input, output, Imgproc.COLOR_BGR2HSV);
         }
         return output;
+    }
+
+    public static void rotate(Mat input, Mat hsv) {
+        boolean isLogo = false;
+        label: for (int i = 0; i < 100; i++){
+            for (int j = 0; j < 300; j++) {
+                if(hsv.get(i, j)[2] > 15 && hsv.get(i, j)[2] < 45) {
+                    isLogo = true;
+                    break label;
+                }
+            }
+        }
+        if(!isLogo) {
+            Core.rotate(input, input, Core.ROTATE_180);
+        }
     }
 
     public static void scaleImage(Mat input, PaperType paperType){
