@@ -78,19 +78,20 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
     public void imageProc() {
         MatConverter.scaleImage(input, paperType);
 
-//        Mat hsv = MatConverter.convertMat(input, MatType.HSV, paperType);
-//        boolean isLogo = false;
-//        label: for (int i = 0; i < 100; i++){
-//            for (int j = 0; j < 200; j++) {
-//                if(hsv.get(i, j)[2] > 100) {
-//                    isLogo = true;
-//                    break label;
-//                }
-//            }
-//        }
-//        if(isLogo) {
-//            Core.rotate(input, input, Core.ROTATE_180);
-//        }
+        Mat hsv = MatConverter.convertMat(input, MatType.HSV, paperType);
+        imageViewer.show(hsv);
+        boolean isLogo = false;
+        label: for (int i = 0; i < 100; i++){
+            for (int j = 0; j < 300; j++) {
+                if(hsv.get(i, j)[2] > 15 && hsv.get(i, j)[2] < 45) {
+                    isLogo = true;
+                    break label;
+                }
+            }
+        }
+        if(!isLogo) {
+            Core.rotate(input, input, Core.ROTATE_180);
+        }
 
         Mat gray = MatConverter.convertMat(input, MatType.GRAY, paperType);
 
@@ -127,7 +128,7 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
 
         List<Rect> outerQuads = new ArrayList<>();
 //        Xử lí ảnh bị nghiêng
-        List<RotatedRect> rotatedRects = new ArrayList<>();
+//        List<RotatedRect> rotatedRects = new ArrayList<>();
         for (Map.Entry<Integer, MatOfPoint> edgeRect : quadrilaterals.entrySet()) {
             int index = edgeRect.getKey();
 
@@ -137,8 +138,8 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
                 outerQuads.add(roi);
 
 //                Xử lí ảnh bị nghiêng
-                RotatedRect rotatedRect = Imgproc.minAreaRect(new MatOfPoint2f(edgeRect.getValue().toArray()));
-                rotatedRects.add(rotatedRect);
+//                RotatedRect rotatedRect = Imgproc.minAreaRect(new MatOfPoint2f(edgeRect.getValue().toArray()));
+//                rotatedRects.add(rotatedRect);
             }
         }
 
@@ -147,18 +148,18 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
         }
 
 //        Xử lí ảnh bị nghiêng
-        RotatedRect rotatedRect = rotatedRects.stream().max(Comparator.comparing(rect -> rect.size.width)).get();
-        Mat m = Imgproc.getRotationMatrix2D(rotatedRect.center, rotatedRect.angle, 1.0);
-        Imgproc.warpAffine(input, input, m, input.size());
-        Imgproc.warpAffine(edged, edged, m, input.size());
-        Imgproc.warpAffine(thresh, thresh, m, input.size());
+//        RotatedRect rotatedRect = rotatedRects.stream().max(Comparator.comparing(rect -> rect.size.width)).get();
+//        Mat m = Imgproc.getRotationMatrix2D(rotatedRect.center, rotatedRect.angle, 1.0);
+//        Imgproc.warpAffine(input, input, m, input.size());
+//        Imgproc.warpAffine(edged, edged, m, input.size());
+//        Imgproc.warpAffine(thresh, thresh, m, input.size());
 
         Rect roi = outerQuads.stream().max(Comparator.comparing(rect -> rect.height)).get();
 
-//        roi.x += 2;
-//        roi.y += 2;
-//        roi.width -= 4;
-//        roi.height -= 4;
+        roi.x += 2;
+        roi.y += 2;
+        roi.width -= 4;
+        roi.height -= 4;
         boundingRect = roi;
 
         Imgproc.rectangle(input, new Point(roi.x, roi.y), new Point(roi.x + roi.width, roi.y + roi.height), new Scalar(0, 255, 0), 2);
@@ -179,7 +180,7 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
         for (MatOfPoint contour : contours) {
             Rect rect = Imgproc.boundingRect(contour);
             int ratio = rect.width / rect.height;
-            if (ratio > 15 && ratio < 20) {
+            if (ratio > 10 && ratio < 20) {
                 rows.add(rect);
                 Imgproc.rectangle(input, new Point(rect.x, rect.y),
                         new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0), 2);
@@ -188,6 +189,8 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
         imageViewer.show(input);
         rows.sort(Comparator.comparing(rect -> rect.y));
         rows.remove(0);
+
+        System.out.println(rows.size());
 
         if (rows.size() != questionNum) {
             throw new RecognizeException();
@@ -227,10 +230,10 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
                     .filter(r -> r.height > 5 && r.width > 5)
                     .sorted(Comparator.comparing(r -> r.x))
                     .collect(Collectors.toList());
-//
-//            if (choices.size() != questionNum) {
-//                throw new RecognizeException();
-//            }
+
+            if (choices.size() != questionNum) {
+                throw new RecognizeException();
+            }
 
             recordsChoices.add(choices);
         }
@@ -264,7 +267,7 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
             }
             int lowest = counters.stream().min(Comparator.comparing(value -> value)).get();
             for (int j = 0; j < counters.size(); j++) {
-                if (counters.get(j) <= lowest + 5) {
+                if (counters.get(j) <= lowest + 15) {
                     recordAnswers.add(j + 1);
                 }
             }

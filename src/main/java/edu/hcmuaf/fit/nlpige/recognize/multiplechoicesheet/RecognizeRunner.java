@@ -11,10 +11,10 @@ public class RecognizeRunner {
 //        long current = System.currentTimeMillis();
 //
 //        for (int i = 0; i < 500; i++) {
-            String file = "src/main/resources/images/form-4.png";
+            String file = "src/main/resources/images/form-3.png";
             SheetRecognize sheetRecognize = new SheetRecognize();
             sheetRecognize.readFile(file);
-            sheetRecognize.setQuestionNum(13);
+            sheetRecognize.setQuestionNum(15);
             sheetRecognize.setPaperType(PaperType.A4);
             List<List<Integer>> answers = (List<List<Integer>>) sheetRecognize.recognize();
 
