@@ -5,19 +5,28 @@ import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.exception.Reco
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.logging.Logger;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.types.MatType;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.types.PaperType;
-import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.types.RationConst;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.utils.MatConverter;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.tool.viewer.image.ImageViewer;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
+
+import static nu.pattern.OpenCV.loadShared;
 
 public class SheetRecognize extends Logger implements SheetRecognizable {
 
     static {
+        loadShared();
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
@@ -31,26 +40,12 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
         this.paperType = PaperType.A4;
     }
 
-    public SheetRecognize(int questionNum, PaperType paperType) {
-        this.questionNum = questionNum;
-        this.paperType = paperType;
-    }
-
-
     public int getQuestionNum() {
         return this.questionNum;
     }
 
     public void setQuestionNum(int questionNum) {
         this.questionNum = questionNum;
-    }
-
-    public PaperType getPaperType() {
-        return paperType;
-    }
-
-    public void setPaperType(PaperType paperType) {
-        this.paperType = paperType;
     }
 
     public void readFile(String file) {
@@ -117,6 +112,8 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
             }
         }
 
+//        imageViewer.show(thresh);
+
         if (outerQuads.size() == 0) {
             throw new RecognizeException();
         }
@@ -178,7 +175,7 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
         edged = edged.submat(boundingRect);
         List<List<Rect>> recordsChoices = new ArrayList<>();
         for (Rect recordRect : records) {
-            recordRect.x += recordRect.width * 1 / 3;
+            recordRect.x += recordRect.width / 3;
             recordRect.width = recordRect.width * 2 / 3;
 
             Mat mat = edged.submat(recordRect);
@@ -216,13 +213,49 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
     }
 
     @Override
-    public Object recognize() {
+    public int[][] recognize() {
         log.info("Processing...");
-        imageProc();
         detectBoundingBox();
         List<Rect> records = detectRows();
         List<List<Rect>> allChoices = detectBubbles(records);
-        return recognizeAnswer(allChoices, records);
+        List<List<Integer>> regconized = recognizeAnswer(allChoices, records);
+        int[][] res = new int[regconized.size()][];
+        for (int i = 0; i < regconized.size(); i++) {
+            res[i] = new int[regconized.get(i).size()];
+            for (int j = 0; j < res[i].length; j++) {
+                res[i][j] = regconized.get(i).get(j);
+            }
+        }
+        return res;
+    }
+
+    public String getByteQrCode() {
+
+        try {
+            Rect rect = new Rect();
+            rect.x = 485;
+            rect.y = 35;
+            rect.width = 75;
+            rect.height = 75;
+            Mat m = input.submat(rect);
+            int bufferSize = m.channels() * m.cols() * m.rows();
+            byte[] buffer = new byte[bufferSize];
+            m.get(0, 0, buffer);
+
+            BufferedImage image = new BufferedImage(m.cols(), m.rows(), BufferedImage.TYPE_3BYTE_BGR);
+            final byte[] targetPixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+            System.arraycopy(buffer, 0, targetPixels, 0, buffer.length);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(image, "bmp", baos);
+            byte[] imageInByte = baos.toByteArray();
+            baos.close();
+            return Base64.getEncoder().encodeToString(imageInByte);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 
@@ -241,7 +274,7 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
             }
             int lowest = counters.stream().min(Comparator.comparing(value -> value)).get();
             for (int j = 0; j < counters.size(); j++) {
-                if (counters.get(j) <= lowest + 15) {
+                if (counters.get(j) <= lowest + 20) {
                     recordAnswers.add(j + 1);
                 }
             }

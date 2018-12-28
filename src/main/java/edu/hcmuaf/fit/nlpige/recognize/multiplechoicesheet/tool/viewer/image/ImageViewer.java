@@ -45,11 +45,11 @@ public class ImageViewer {
         int bufferSize = matrix.channels() * matrix.cols() * matrix.rows();
         byte[] buffer = new byte[bufferSize];
         matrix.get(0, 0, buffer); // get all the pixels
-        BufferedImage image = new BufferedImage(matrix.cols(), matrix.
-                rows(), type);
-        final byte[] targetPixels = ((DataBufferByte) image.getRaster().
-                getDataBuffer()).getData();
+        BufferedImage image = new BufferedImage(matrix.cols(), matrix.rows(), type);
+        final byte[] targetPixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
         System.arraycopy(buffer, 0, targetPixels, 0, buffer.length);
+
+
         return image;
     }
 }

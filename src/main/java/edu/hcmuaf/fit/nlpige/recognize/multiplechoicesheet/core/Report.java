@@ -1,50 +1,49 @@
 package edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.core;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.Arrays;
 
 public class Report {
-    private List<List<Integer>> data;
-    private Map<Integer, Integer> answer;
+    private int[][] data;
+    private int[][] answer;
     private String correctReport;
     private String failReport;
     private boolean isCorrect;
 
-    public Report(List<List<Integer>> data) {
+    public Report(int[][] data) {
         this.data = data;
         isCorrect = true;
-        answer = new HashMap<>();
+        answer = new int[data.length][1];
         analyzeAnswer();
     }
 
     public void analyzeAnswer() {
         correctReport = "----------------REPORT----------------\n";
         failReport = "----------------REPORT----------------\n";
-        for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).size() == 1) {
-                answer.put(i + 1, data.get(i).get(0));
-            } else if (data.get(i).size() == data.size()) {
-                answer.put(i + 1, 0);
+        for (int i = 0; i < data.length; i++) {
+            if (data[i].length == 1) {
+                answer[i][0] = data[i][0];
+            } else if (data[i].length == data.length) {
+                answer[i][0] = 0;
             } else {
                 isCorrect = false;
                 failReport += "- Error detected at answer " + (i + 1) + ": ";
-                failReport += "Answer must be only one, Answer detected: " + data.get(i).toString();
+                failReport += "Answer must be only one, Answer detected: " + Arrays.toString(data[i]);
                 failReport += "\n";
             }
         }
         int sum = 0;
-        for (Map.Entry<Integer, Integer> set : answer.entrySet()) {
-            sum += set.getValue();
+        for (int i = 0; i < answer.length; i++) {
+            sum += answer[i][0];
         }
-        if (sum > data.size()) {
+        if (sum > data.length) {
             isCorrect = false;
-            failReport += "- Error detected: Total point (" + sum + ") are greater than " + data.size();
+            failReport += "- Error detected: Total point (" + sum + ") are greater than " + data.length;
             failReport += "\n";
         } else {
             correctReport += "- Answer:\n";
-            for (Map.Entry<Integer, Integer> set : answer.entrySet()) {
-                correctReport += "\tReport " + set.getKey() + ": " + set.getValue() + "\n";
+            for (int i = 0; i< answer.length; i++) {
+                correctReport += "\tReport " + (i+1) + ": " + answer[i][0] + "\n";
             }
             correctReport += "Total point: " + sum;
         }
@@ -54,7 +53,7 @@ public class Report {
         return isCorrect ? correctReport : failReport;
     }
 
-    public Map<Integer, Integer> getAnswer() {
+    public int[][] getAnswer() {
         return answer;
     }
 

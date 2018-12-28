@@ -5,7 +5,7 @@ public class Test {
     public static final String FORM = "src/main/resources/output/form.html";
     public static final String HTML_OUTPUT = "src/main/resources/output/html";
     public static final String PDF_OUTPUT = "src/main/resources/output/pdf";
-    public static final String QR_CODE = "src/main/resources/images/logo.jpg";
+    public static final String QR_CODE = "src/main/resources/images/default_qrcode.png";
 
     public static void main(String[] args) {
         String[] candidates = {"Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam",

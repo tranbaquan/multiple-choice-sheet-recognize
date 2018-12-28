@@ -6,5 +6,4 @@ public interface Recognizable {
 
     void detectBoundingBox();
 
-    Object recognize();
 }

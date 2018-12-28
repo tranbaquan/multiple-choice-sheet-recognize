@@ -48,7 +48,7 @@ public class MatConverter extends Logger {
         boolean isLogo = false;
         label: for (int i = 0; i < 100; i++){
             for (int j = 0; j < 300; j++) {
-                if(hsv.get(i, j)[2] > 15 && hsv.get(i, j)[2] < 45) {
+                if(hsv.get(i, j)[2] > 0 && hsv.get(i, j)[2] < 45 || hsv.get(i, j)[2] > 150) {
                     isLogo = true;
                     break label;
                 }
