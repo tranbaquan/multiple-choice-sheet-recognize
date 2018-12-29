@@ -12,10 +12,9 @@ public class RecognizeRunner {
         SheetRecognize sheetRecognize = new SheetRecognize();
         sheetRecognize.readFile(file);
         sheetRecognize.imageProc();
+        System.out.println(sheetRecognize.getQrCode());
         sheetRecognize.setQuestionNum(15);
         int[][] answer = sheetRecognize.recognize();
-
-
         Report report = new Report(answer);
         System.out.println(report.getReport());
 

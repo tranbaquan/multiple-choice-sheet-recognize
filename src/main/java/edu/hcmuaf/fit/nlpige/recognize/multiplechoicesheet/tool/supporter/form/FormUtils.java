@@ -5,20 +5,17 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
-import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.logging.Logger;
 
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
 
-public class FormUtils extends Logger {
+public class FormUtils {
 
-    public static final String HEAD_PATH = "src/main/resources/default/html-head.txt";
-    public static final String FORM_NAME = "form.html";
+    private static final String HEAD_PATH = "src/main/resources/default/html-head.txt";
+    private static final String FORM_NAME = "form.html";
 
     public static void generateHtml(FormHeader formHeader, FormBody formBody, String desFolder) {
         try {
@@ -38,8 +35,6 @@ public class FormUtils extends Logger {
             pw.write(formBody.getHtml());
             pw.flush();
             pw.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -70,8 +65,6 @@ public class FormUtils extends Logger {
             pw.write(document.toString());
             pw.flush();
             pw.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -97,7 +90,7 @@ public class FormUtils extends Logger {
                 FileInputStream fis = new FileInputStream(file);
 
                 // convert name to .pdf
-                StringBuffer fileName = new StringBuffer(file.getName());
+                StringBuilder fileName = new StringBuilder(file.getName());
                 fileName.delete(fileName.lastIndexOf("."), fileName.length());
                 fileName.append(".pdf");
 
@@ -112,11 +105,7 @@ public class FormUtils extends Logger {
                 XMLWorkerHelper.getInstance().parseXHtml(writer, document, fis, Charset.forName("UTF-8"));
                 document.close();
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (DocumentException | IOException e) {
             e.printStackTrace();
         }
     }

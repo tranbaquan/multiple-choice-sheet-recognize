@@ -1,6 +1,5 @@
 package edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.utils;
 
-import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.logging.Logger;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.types.MatType;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.types.PaperType;
 import org.opencv.core.Core;
@@ -8,16 +7,14 @@ import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
-public class MatConverter extends Logger {
+public class MatConverter {
 
     public static Mat convertMat(Mat input, MatType outputType, PaperType paperType){
         if(outputType == null) {
-            log.error("Output type is null", new NullPointerException());
             throw new NullPointerException("Output type is null");
         }
 
         if (paperType == null) {
-            log.error("Paper type is null", new NullPointerException());
             throw new NullPointerException("Paper type is null");
         }
 
@@ -48,7 +45,7 @@ public class MatConverter extends Logger {
         boolean isLogo = false;
         label: for (int i = 0; i < 100; i++){
             for (int j = 0; j < 300; j++) {
-                if(hsv.get(i, j)[2] > 0 && hsv.get(i, j)[2] < 45 || hsv.get(i, j)[2] > 150) {
+                if(hsv.get(i, j)[0] > 15 && hsv.get(i, j)[0] < 45) {
                     isLogo = true;
                     break label;
                 }
@@ -61,7 +58,6 @@ public class MatConverter extends Logger {
 
     public static void scaleImage(Mat input, PaperType paperType){
         if (paperType == null) {
-            log.error("Paper type is null", new NullPointerException());
             throw new NullPointerException("Paper type is null");
         }
 

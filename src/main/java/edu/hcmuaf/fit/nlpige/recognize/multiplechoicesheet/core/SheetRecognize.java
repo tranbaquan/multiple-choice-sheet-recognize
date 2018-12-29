@@ -2,7 +2,6 @@ package edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.core;
 
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.exception.FileNotFoundException;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.exception.RecognizeException;
-import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.logging.Logger;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.types.MatType;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.types.PaperType;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.utils.MatConverter;
@@ -12,18 +11,16 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import static nu.pattern.OpenCV.loadShared;
 
-public class SheetRecognize extends Logger implements SheetRecognizable {
+public class SheetRecognize implements SheetRecognizable {
 
     static {
         loadShared();
@@ -49,7 +46,6 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
     }
 
     public void readFile(String file) {
-        log.info("Reading " + file);
         this.input = Imgcodecs.imread(file);
         if (input.dataAddr() == 0) {
             throw new FileNotFoundException();
@@ -112,7 +108,7 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
             }
         }
 
-//        imageViewer.show(thresh);
+        imageViewer.show(thresh);
 
         if (outerQuads.size() == 0) {
             throw new RecognizeException();
@@ -145,9 +141,7 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
         ArrayList<MatOfPoint> contours = new ArrayList<>();
         Mat hierarchy = new Mat();
         Imgproc.findContours(thresh, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
-
         List<Rect> rows = new ArrayList<>();
-
         for (MatOfPoint contour : contours) {
             Rect rect = Imgproc.boundingRect(contour);
             int ratio = rect.width / rect.height;
@@ -168,6 +162,7 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
         }
         return rows;
     }
+
 
 
     @Override
@@ -214,35 +209,45 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
 
     @Override
     public int[][] recognize() {
-        log.info("Processing...");
         detectBoundingBox();
         List<Rect> records = detectRows();
         List<List<Rect>> allChoices = detectBubbles(records);
-        List<List<Integer>> regconized = recognizeAnswer(allChoices, records);
-        int[][] res = new int[regconized.size()][];
-        for (int i = 0; i < regconized.size(); i++) {
-            res[i] = new int[regconized.get(i).size()];
+        List<List<Integer>> recognized = recognizeAnswer(allChoices, records);
+        int[][] res = new int[recognized.size()][];
+        for (int i = 0; i < recognized.size(); i++) {
+            res[i] = new int[recognized.get(i).size()];
             for (int j = 0; j < res[i].length; j++) {
-                res[i][j] = regconized.get(i).get(j);
+                res[i][j] = recognized.get(i).get(j);
             }
         }
         return res;
     }
 
     public String getQrCode() {
-
         try {
             Rect rect = new Rect();
-            rect.x = 485;
-            rect.y = 35;
-            rect.width = 75;
-            rect.height = 75;
+            rect.x = 400;
+            rect.y = 0;
+            rect.width = 196;
+            rect.height = 200;
             Mat m = input.submat(rect);
-            int bufferSize = m.channels() * m.cols() * m.rows();
+            Mat m1 = MatConverter.convertMat(m, MatType.GRAY, paperType);
+            m1 = MatConverter.convertMat(m1, MatType.GAUSSIANBLUR, paperType);
+            m1 = MatConverter.convertMat(m1, MatType.CANNY, paperType);
+            Imgproc.dilate(m1, m1, Imgproc.getStructuringElement(Imgproc.CV_SHAPE_RECT, new Size(9, 9)));
+            ArrayList<MatOfPoint> contours = new ArrayList<>();
+            Mat hierarchy = new Mat();
+            Imgproc.findContours(m1, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
+            contours.sort(Comparator.comparing(matOfPoint -> matOfPoint.toArray().length));
+            Rect r = Imgproc.boundingRect(contours.get(contours.size() - 1));
+
+            Mat m2 = m.submat(r);
+            imageViewer.show(m2);
+            int bufferSize = m2.channels() * m2.cols() * m2.rows();
             byte[] buffer = new byte[bufferSize];
             m.get(0, 0, buffer);
 
-            BufferedImage image = new BufferedImage(m.cols(), m.rows(), BufferedImage.TYPE_3BYTE_BGR);
+            BufferedImage image = new BufferedImage(m2.cols(), m2.rows(), BufferedImage.TYPE_3BYTE_BGR);
             final byte[] targetPixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
             System.arraycopy(buffer, 0, targetPixels, 0, buffer.length);
 
@@ -254,7 +259,6 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
@@ -266,8 +270,7 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
             List<Rect> choiceOfRecord = recordsChoices.get(i);
             List<Integer> recordAnswers = new ArrayList<>();
             List<Integer> counters = new ArrayList<>();
-            for (int j = 0; j < choiceOfRecord.size(); j++) {
-                Rect r = choiceOfRecord.get(j);
+            for (Rect r : choiceOfRecord) {
                 Mat choiceMat = recordMat.submat(r);
                 int nonZero = Core.countNonZero(choiceMat);
                 counters.add(nonZero);
@@ -280,7 +283,6 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
             }
             answer.add(recordAnswers);
         }
-        log.info("Done!");
         return answer;
     }
 }
