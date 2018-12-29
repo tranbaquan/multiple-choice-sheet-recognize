@@ -229,7 +229,7 @@ public class SheetRecognize extends Logger implements SheetRecognizable {
         return res;
     }
 
-    public String getByteQrCode() {
+    public String getQrCode() {
 
         try {
             Rect rect = new Rect();
