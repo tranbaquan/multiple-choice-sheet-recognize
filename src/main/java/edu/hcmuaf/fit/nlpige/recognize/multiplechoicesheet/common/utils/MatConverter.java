@@ -2,10 +2,11 @@ package edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.utils;
 
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.types.MatType;
 import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.common.types.PaperType;
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
-import org.opencv.core.Size;
+import edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.tool.viewer.image.ImageViewer;
+import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
+
+import java.util.Arrays;
 
 public class MatConverter {
 
@@ -43,9 +44,12 @@ public class MatConverter {
 
     public static void rotate(Mat input, Mat hsv) {
         boolean isLogo = false;
-        label: for (int i = 0; i < 100; i++){
-            for (int j = 0; j < 300; j++) {
-                if(hsv.get(i, j)[0] > 15 && hsv.get(i, j)[0] < 45) {
+//        Imgproc.rectangle(hsv, new Point(0,0), new Point(150, 80), new Scalar(0,0,0));
+//        new ImageViewer().show(hsv);
+
+        label: for (int i = 0; i < 80; i++){
+            for (int j = 0; j < 150; j++) {
+                if(hsv.get(i, j)[2] < 90) {
                     isLogo = true;
                     break label;
                 }

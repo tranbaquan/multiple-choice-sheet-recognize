@@ -108,8 +108,6 @@ public class SheetRecognize implements SheetRecognizable {
             }
         }
 
-        imageViewer.show(thresh);
-
         if (outerQuads.size() == 0) {
             throw new RecognizeException();
         }
@@ -242,10 +240,9 @@ public class SheetRecognize implements SheetRecognizable {
             Rect r = Imgproc.boundingRect(contours.get(contours.size() - 1));
 
             Mat m2 = m.submat(r);
-            imageViewer.show(m2);
             int bufferSize = m2.channels() * m2.cols() * m2.rows();
             byte[] buffer = new byte[bufferSize];
-            m.get(0, 0, buffer);
+            m2.get(0, 0, buffer);
 
             BufferedImage image = new BufferedImage(m2.cols(), m2.rows(), BufferedImage.TYPE_3BYTE_BGR);
             final byte[] targetPixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
@@ -277,7 +274,7 @@ public class SheetRecognize implements SheetRecognizable {
             }
             int lowest = counters.stream().min(Comparator.comparing(value -> value)).get();
             for (int j = 0; j < counters.size(); j++) {
-                if (counters.get(j) <= lowest + 20) {
+                if (counters.get(j) <= lowest + 19) {
                     recordAnswers.add(j + 1);
                 }
             }
