@@ -47,9 +47,9 @@ public class FormBody {
         builder.append("<div style=\"font-size: 5px;\">&nbsp;</div>");
         builder.append("<div class=\"text-bold text-small\">Ghi chú:</div>\n");
         builder.append("<div class=\"text-small\">\n");
-        builder.append(String.format("- Nếu đồng ý thì tô vào hệ số biểu quyết, tổng hệ số biểu không được vượt quá %s\n", candidates.length));
+        builder.append(String.format("- Nếu đồng ý thì tô vào hệ số biểu quyết, tổng hệ số biểu quyết không được vượt quá %s\n", candidates.length));
         builder.append("</div>\n");
-        builder.append("<div class=\"text-small\">- Nếu không đồng ý bầu thì không tô</div>\n");
+        builder.append("<div class=\"text-small\">- Nếu không đồng ý thì không tô</div>\n");
         builder.append("</div>\n</div>\n</body>\n</html>");
         return builder.toString();
     }

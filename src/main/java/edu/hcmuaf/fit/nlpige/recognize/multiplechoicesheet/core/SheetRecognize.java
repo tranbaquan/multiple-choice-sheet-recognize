@@ -98,6 +98,9 @@ public class SheetRecognize implements SheetRecognizable {
             int index = edgeRect.getKey();
 
             double[] boxHierarchy = hierarchy.get(0, index);
+
+            Rect r = Imgproc.boundingRect(contours.get(index));
+            Imgproc.rectangle(input, new Point(r.x,r.y), new Point(r.x+r.width, r.y+r.height), new Scalar(new Random().nextInt(255),new Random().nextInt(255),new Random().nextInt(255)), 2);
             if (boxHierarchy[3] == -1) {
                 Rect roi = Imgproc.boundingRect(contours.get(index));
                 outerQuads.add(roi);
@@ -107,6 +110,8 @@ public class SheetRecognize implements SheetRecognizable {
 //                rotatedRects.add(rotatedRect);
             }
         }
+
+        imageViewer.show(input);
 
         if (outerQuads.size() == 0) {
             throw new RecognizeException();

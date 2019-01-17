@@ -5,12 +5,10 @@ public class Test {
     public static final String FORM = "src/main/resources/output/form.html";
     public static final String HTML_OUTPUT = "src/main/resources/output/html";
     public static final String PDF_OUTPUT = "src/main/resources/output/pdf";
-    public static final String QR_CODE = "src/main/resources/images/default_qrcode.png";
+    public static final String QR_CODE = "src/main/resources/images/qr_code.png";
 
     public static void main(String[] args) {
-        String[] candidates = {"Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam",
-                "Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam",
-                "Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam"};
+        String[] candidates = {"Nguyễn Văn Nam", "Nguyễn Văn Nam","Nguyễn Văn Nam", "Nguyễn Văn Nam","Nguyễn Văn Nam", "Nguyễn Văn Nam","Nguyễn Văn Nam", "Nguyễn Văn Nam","Nguyễn Văn Nam", "Nguyễn Văn Nam","Nguyễn Văn Nam", "Nguyễn Văn Nam","Nguyễn Văn Nam", "Nguyễn Văn Nam","Nguyễn Văn Nam"};
         PDFGenerator pdfGenerator = new PDFGenerator();
         pdfGenerator.generateDefaultHtml(2018, "2018-2023", "HỘI ĐỒNG QUẢN TRỊ", candidates, OUTPUT_FOLDER);
         pdfGenerator.setQRCode(FORM, HTML_OUTPUT, QR_CODE);

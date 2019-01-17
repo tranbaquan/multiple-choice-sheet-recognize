@@ -1,0 +1,695 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>BubbleSheet</title>
+    <style type="text/css">
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .wrapper {
+            width: 100%;
+        }
+
+        .header {
+            width: 100%;
+            height: auto;
+        }
+
+        .header > div {
+            width: 100%;
+            height: auto;
+        }
+
+        .logo {
+            width: 25%;
+            height: auto;
+            float: left;
+        }
+
+        .qr-code {
+            width: 100px;
+            height: auto;
+            float: right;
+        }
+
+        .title {
+            width: 100%;
+            text-align: center;
+        }
+
+        .title > h3 {
+            align-content: center;
+            margin: 5px;
+            line-height: 80%;
+        }
+
+        .normal-title {
+            font-size: 18px;
+            font-weight: normal;
+        }
+
+        .small-title {
+            font-size: 16px;
+            font-weight: 300;
+        }
+
+        .nameSheet {
+            font-size: 40px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        .text-bold {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        .text-small {
+            font-size: 11px;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        .content {
+            width: 100%;
+            padding: 20px 50px;
+        }
+
+        .table {
+            width: 100%;
+        }
+
+        .table table {
+            border-collapse: collapse;
+            border: 2px solid #000;
+        }
+
+        .table tr {
+            height: 40px;
+            width: 100%;
+        }
+
+        .table td {
+            border: 0px solid #fff;
+            border-bottom: 2px solid #000;
+        }
+
+        .last-child > td {
+            border-bottom: 0px !important;
+        }
+
+        .table .left {
+            padding-left: 10px;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        .table .right {
+            padding-right: 10px;
+            text-align: right;
+            font-size: 13px;
+        }
+
+        .bubble {
+            clear: left;
+            float: right;
+            width: 17px;
+            height: 17px;
+        }
+
+        .span {
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+<div class="header">
+<div>
+<div class="logo">
+<img src="src/main/resources/images/logo.jpg" alt=""/>
+</div>
+<div class="qr-code">
+<img src="%s" alt=""/>
+</div>
+</div>
+<div class="title">
+<h3 class="normal-title">ĐẠI HỘI CỔ ĐÔNG THƯỜNG NIÊN NĂM 2018</h3>
+<h3 class="normal-title">NGÂN HÀNG TMCP PHÁT TRIỂN</h3>
+<h3 class="normal-title">THÀNH PHỐ HỒ CHÍ MINH</h3>
+<h1 class="nameSheet">PHIẾU BẦU CỬ</h1>
+<h3 class="small-title">THÀNH VIÊN HỘI ĐỒNG QUẢN TRỊ</h3>
+<h3 class="small-title">NHIỆM KỲ 2018-2023</h3>
+</div>
+</div>
+<div class="content">
+<div class="table">
+<table>
+<tr>
+<td class="left">Tên Ứng Cử Viên</td>
+<td class="right" style="text-align: center">Hệ Số Biểu Quyết</td>
+</tr>
+<tr>
+<td class="left">1. Nguyễn Văn Nam</td>
+<td class="right">
+<img class="bubble" src="src/main/resources/icons/1.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/2.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/3.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/4.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/5.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/6.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/7.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/8.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/9.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/10.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/11.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/12.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/13.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/14.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/15.png" alt=""/>
+<span class="span">&nbsp;</span>
+</td>
+</tr>
+<tr>
+<td class="left">2. Nguyễn Văn Nam</td>
+<td class="right">
+<img class="bubble" src="src/main/resources/icons/1.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/2.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/3.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/4.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/5.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/6.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/7.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/8.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/9.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/10.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/11.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/12.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/13.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/14.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/15.png" alt=""/>
+<span class="span">&nbsp;</span>
+</td>
+</tr>
+<tr>
+<td class="left">3. Nguyễn Văn Nam</td>
+<td class="right">
+<img class="bubble" src="src/main/resources/icons/1.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/2.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/3.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/4.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/5.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/6.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/7.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/8.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/9.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/10.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/11.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/12.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/13.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/14.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/15.png" alt=""/>
+<span class="span">&nbsp;</span>
+</td>
+</tr>
+<tr>
+<td class="left">4. Nguyễn Văn Nam</td>
+<td class="right">
+<img class="bubble" src="src/main/resources/icons/1.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/2.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/3.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/4.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/5.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/6.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/7.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/8.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/9.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/10.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/11.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/12.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/13.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/14.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/15.png" alt=""/>
+<span class="span">&nbsp;</span>
+</td>
+</tr>
+<tr>
+<td class="left">5. Nguyễn Văn Nam</td>
+<td class="right">
+<img class="bubble" src="src/main/resources/icons/1.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/2.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/3.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/4.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/5.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/6.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/7.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/8.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/9.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/10.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/11.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/12.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/13.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/14.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/15.png" alt=""/>
+<span class="span">&nbsp;</span>
+</td>
+</tr>
+<tr>
+<td class="left">6. Nguyễn Văn Nam</td>
+<td class="right">
+<img class="bubble" src="src/main/resources/icons/1.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/2.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/3.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/4.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/5.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/6.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/7.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/8.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/9.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/10.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/11.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/12.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/13.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/14.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/15.png" alt=""/>
+<span class="span">&nbsp;</span>
+</td>
+</tr>
+<tr>
+<td class="left">7. Nguyễn Văn Nam</td>
+<td class="right">
+<img class="bubble" src="src/main/resources/icons/1.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/2.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/3.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/4.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/5.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/6.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/7.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/8.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/9.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/10.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/11.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/12.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/13.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/14.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/15.png" alt=""/>
+<span class="span">&nbsp;</span>
+</td>
+</tr>
+<tr>
+<td class="left">8. Nguyễn Văn Nam</td>
+<td class="right">
+<img class="bubble" src="src/main/resources/icons/1.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/2.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/3.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/4.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/5.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/6.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/7.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/8.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/9.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/10.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/11.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/12.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/13.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/14.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/15.png" alt=""/>
+<span class="span">&nbsp;</span>
+</td>
+</tr>
+<tr>
+<td class="left">9. Nguyễn Văn Nam</td>
+<td class="right">
+<img class="bubble" src="src/main/resources/icons/1.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/2.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/3.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/4.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/5.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/6.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/7.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/8.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/9.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/10.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/11.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/12.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/13.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/14.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/15.png" alt=""/>
+<span class="span">&nbsp;</span>
+</td>
+</tr>
+<tr>
+<td class="left">10. Nguyễn Văn Nam</td>
+<td class="right">
+<img class="bubble" src="src/main/resources/icons/1.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/2.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/3.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/4.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/5.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/6.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/7.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/8.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/9.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/10.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/11.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/12.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/13.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/14.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/15.png" alt=""/>
+<span class="span">&nbsp;</span>
+</td>
+</tr>
+<tr>
+<td class="left">11. Nguyễn Văn Nam</td>
+<td class="right">
+<img class="bubble" src="src/main/resources/icons/1.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/2.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/3.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/4.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/5.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/6.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/7.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/8.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/9.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/10.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/11.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/12.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/13.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/14.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/15.png" alt=""/>
+<span class="span">&nbsp;</span>
+</td>
+</tr>
+<tr>
+<td class="left">12. Nguyễn Văn Nam</td>
+<td class="right">
+<img class="bubble" src="src/main/resources/icons/1.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/2.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/3.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/4.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/5.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/6.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/7.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/8.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/9.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/10.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/11.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/12.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/13.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/14.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/15.png" alt=""/>
+<span class="span">&nbsp;</span>
+</td>
+</tr>
+<tr>
+<td class="left">13. Nguyễn Văn Nam</td>
+<td class="right">
+<img class="bubble" src="src/main/resources/icons/1.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/2.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/3.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/4.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/5.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/6.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/7.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/8.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/9.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/10.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/11.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/12.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/13.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/14.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/15.png" alt=""/>
+<span class="span">&nbsp;</span>
+</td>
+</tr>
+<tr>
+<td class="left">14. Nguyễn Văn Nam</td>
+<td class="right">
+<img class="bubble" src="src/main/resources/icons/1.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/2.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/3.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/4.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/5.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/6.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/7.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/8.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/9.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/10.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/11.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/12.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/13.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/14.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/15.png" alt=""/>
+<span class="span">&nbsp;</span>
+</td>
+</tr>
+<tr class="last-child">
+<td class="left">15. Nguyễn Văn Nam</td>
+<td class="right">
+<img class="bubble" src="src/main/resources/icons/1.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/2.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/3.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/4.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/5.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/6.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/7.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/8.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/9.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/10.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/11.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/12.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/13.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/14.png" alt=""/>
+<span class="span">&nbsp;</span>
+<img class="bubble" src="src/main/resources/icons/15.png" alt=""/>
+<span class="span">&nbsp;</span>
+</td>
+</tr>
+ </table>
+</div>
+<div style="font-size: 5px;">&nbsp;</div><div class="text-bold text-small">Ghi chú:</div>
+<div class="text-small">
+- Nếu đồng ý thì tô vào hệ số biểu quyết, tổng hệ số biểu quyết không được vượt quá 15
+</div>
+<div class="text-small">- Nếu không đồng ý thì không tô</div>
+</div>
+</div>
+</body>
+</html>

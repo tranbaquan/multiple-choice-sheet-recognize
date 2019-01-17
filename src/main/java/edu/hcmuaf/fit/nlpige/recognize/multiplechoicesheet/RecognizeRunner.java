@@ -10,12 +10,12 @@ public class RecognizeRunner {
 
     public static void main(String[] args) {
 
-        String file = "D:\\Workspace\\OpenCV\\MultipleChoiceSheetRecognize\\src\\main\\resources\\images\\form-12.png";
+        String file = "D:\\Workspace\\OpenCV\\MultipleChoiceSheetRecognize\\src\\main\\resources\\images\\scan.png";
         SheetRecognize sheetRecognize = new SheetRecognize();
         sheetRecognize.readFile(file);
         sheetRecognize.imageProc();
-        System.out.println(sheetRecognize.getQrCode());
-        sheetRecognize.setQuestionNum(15);
+//        System.out.println(sheetRecognize.getQrCode());
+        sheetRecognize.setQuestionNum(4);
         int[][] answer = sheetRecognize.recognize();
         Report report = new Report(answer);
         System.out.println(report.getReport());
