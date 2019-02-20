@@ -9,7 +9,6 @@ import java.util.Arrays;
 public class RecognizeRunner {
 
     public static void main(String[] args) {
-
         String file = "D:\\Workspace\\OpenCV\\MultipleChoiceSheetRecognize\\src\\main\\resources\\images\\scan.png";
         SheetRecognize sheetRecognize = new SheetRecognize();
         sheetRecognize.readFile(file);

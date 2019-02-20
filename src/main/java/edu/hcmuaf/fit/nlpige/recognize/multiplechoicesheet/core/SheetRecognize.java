@@ -23,8 +23,15 @@ import static nu.pattern.OpenCV.loadShared;
 public class SheetRecognize implements SheetRecognizable {
 
     static {
-        loadShared();
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        String osName = System.getProperty("os.name");
+        String osArch = System.getProperty("os.arch");
+        String userDir = System.getProperty("user.dir");
+        if ("Windows 7".equalsIgnoreCase(osName) && "amd64".equalsIgnoreCase(osArch)) {
+            System.load(userDir+ "/src/main/resources/opencv_java341.dll");
+        } else {
+            loadShared();
+            System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        }
     }
 
     private final ImageViewer imageViewer = new ImageViewer();
@@ -82,7 +89,7 @@ public class SheetRecognize implements SheetRecognizable {
 
         for (int i = 0; i < contours.size(); i++) {
             MatOfPoint2f contour2f = new MatOfPoint2f(contours.get(i).toArray());
-            double approxDistance = Imgproc.arcLength(contour2f, true) * 0.002;
+            double approxDistance = Imgproc.arcLength(contour2f, true) * 0.005;
             Imgproc.approxPolyDP(contour2f, approxCurve, approxDistance, true);
 
             MatOfPoint points = new MatOfPoint(approxCurve.toArray());
@@ -100,7 +107,7 @@ public class SheetRecognize implements SheetRecognizable {
             double[] boxHierarchy = hierarchy.get(0, index);
 
             Rect r = Imgproc.boundingRect(contours.get(index));
-            Imgproc.rectangle(input, new Point(r.x,r.y), new Point(r.x+r.width, r.y+r.height), new Scalar(new Random().nextInt(255),new Random().nextInt(255),new Random().nextInt(255)), 2);
+            Imgproc.rectangle(input, new Point(r.x, r.y), new Point(r.x + r.width, r.y + r.height), new Scalar(new Random().nextInt(255), new Random().nextInt(255), new Random().nextInt(255)), 2);
             if (boxHierarchy[3] == -1) {
                 Rect roi = Imgproc.boundingRect(contours.get(index));
                 outerQuads.add(roi);
@@ -111,7 +118,10 @@ public class SheetRecognize implements SheetRecognizable {
             }
         }
 
-        imageViewer.show(input);
+//        imageViewer.show(input);
+//        imageViewer.show(edged);
+//        imageViewer.show(thresh);
+
 
         if (outerQuads.size() == 0) {
             throw new RecognizeException();
@@ -165,7 +175,6 @@ public class SheetRecognize implements SheetRecognizable {
         }
         return rows;
     }
-
 
 
     @Override
