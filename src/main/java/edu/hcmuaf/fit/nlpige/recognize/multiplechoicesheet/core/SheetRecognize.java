@@ -24,9 +24,13 @@ public class SheetRecognize implements SheetRecognizable {
 
     static {
         String osName = System.getProperty("os.name");
-        String osArch = System.getProperty("os.arch");
+//        String osArch = System.getProperty("os.arch");
+//        System.out.println(osName);
+//        System.out.println(osArch);
+//        System.out.println(System.getenv("ProgramFiles(x86)") != null);
         String userDir = System.getProperty("user.dir");
-        if ("Windows 7".equalsIgnoreCase(osName) && "amd64".equalsIgnoreCase(osArch)) {
+        if (osName.contains("Windows 7") && System.getenv("ProgramFiles(x86)") != null) {
+//            System.out.println("Good");
             System.load(userDir+ "/src/main/resources/opencv_java341.dll");
         } else {
             loadShared();
