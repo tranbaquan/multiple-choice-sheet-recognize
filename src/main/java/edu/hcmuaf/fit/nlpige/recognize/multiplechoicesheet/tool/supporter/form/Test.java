@@ -8,9 +8,9 @@ public class Test {
     public static final String QR_CODE = "src/main/resources/images/qr_code.png";
 
     public static void main(String[] args) {
-        String[] candidates = {"Nguyễn Văn Nam", "Nguyễn Văn Nam","Nguyễn Văn Nam", "Nguyễn Văn Nam","Nguyễn Văn Nam", "Nguyễn Văn Nam","Nguyễn Văn Nam", "Nguyễn Văn Nam","Nguyễn Văn Nam", "Nguyễn Văn Nam","Nguyễn Văn Nam", "Nguyễn Văn Nam","Nguyễn Văn Nam", "Nguyễn Văn Nam","Nguyễn Văn Nam"};
+        String[] candidates = {"Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam", "Nguyễn Văn Nam"};
         PDFGenerator pdfGenerator = new PDFGenerator();
-        pdfGenerator.generateDefaultHtml(2018, "2018-2023", "HỘI ĐỒNG QUẢN TRỊ", candidates, OUTPUT_FOLDER);
+        pdfGenerator.generateDefaultHtml(2018, "2018-2023", "HỘI ĐỒNG QUẢN TRỊ", "123456", candidates, OUTPUT_FOLDER);
         pdfGenerator.setQRCode(FORM, HTML_OUTPUT, QR_CODE);
         pdfGenerator.convertXhtmlToPdf(HTML_OUTPUT, PDF_OUTPUT);
     }

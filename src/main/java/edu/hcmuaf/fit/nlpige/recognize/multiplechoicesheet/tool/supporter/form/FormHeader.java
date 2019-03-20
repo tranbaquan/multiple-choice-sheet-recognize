@@ -4,11 +4,20 @@ public class FormHeader {
     private int year;
     private String term;
     private String board;
+    private String id;
 
     public FormHeader(int year, String term, String board) {
         this.year = year;
         this.term = term;
         this.board = board;
+        id = "";
+    }
+
+    public FormHeader(int year, String term, String board, String id) {
+        this.year = year;
+        this.term = term;
+        this.board = board;
+        this.id = id;
     }
 
     public int getYear() {
@@ -35,6 +44,14 @@ public class FormHeader {
         this.board = board;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getHtml() {
         StringBuilder builder = new StringBuilder();
         builder.append("<body>\n");
@@ -46,6 +63,7 @@ public class FormHeader {
         builder.append("</div>\n");
         builder.append("<div class=\"qr-code\">\n");
         builder.append("<img src=\"%s\" alt=\"\"/>\n");
+        builder.append(String.format("<div class=\"text-small\" style=\"text-align: center\">%s</div>\n", id));
         builder.append("</div>\n");
         builder.append("</div>\n");
         builder.append("<div class=\"title\">\n");

@@ -11,6 +11,13 @@ public class PDFGenerator implements PDFGenerable{
     }
 
     @Override
+    public void generateDefaultHtml(int year, String term, String board, String staffId, String[] body, String desFolder) {
+        FormHeader formHeader = new FormHeader(year, term, board, staffId);
+        FormBody formBody = new FormBody(body);
+        FormUtils.generateHtml(formHeader, formBody, desFolder);
+    }
+
+    @Override
     public void setQRCode(String srcFile, String desFolder, String qrFile) {
         FormUtils.setQRCode(srcFile,desFolder, qrFile);
     }

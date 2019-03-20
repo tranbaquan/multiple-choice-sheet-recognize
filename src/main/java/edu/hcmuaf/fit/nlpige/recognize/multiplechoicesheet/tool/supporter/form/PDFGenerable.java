@@ -4,6 +4,8 @@ public interface PDFGenerable {
 
     void generateDefaultHtml(int year, String term, String board, String[] body, String desFolder);
 
+    void generateDefaultHtml(int year, String term, String board, String staffId, String[] body, String desFolder);
+
     void setQRCode(String srcFile, String desFolder, String qrFile);
 
     void setMultiQRCode(String srcFile, String desFolder, String qrFolder);
