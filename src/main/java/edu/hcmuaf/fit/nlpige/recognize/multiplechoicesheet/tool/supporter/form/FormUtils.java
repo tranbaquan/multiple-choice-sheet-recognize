@@ -19,6 +19,10 @@ public class FormUtils {
 
     public static void generateHtml(FormHeader formHeader, FormBody formBody, String desFolder) {
         try {
+            File d = new File(desFolder);
+            if(!d.exists()) {
+                d.mkdirs();
+            }
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(HEAD_PATH)));
 
             String formPath = desFolder + "/" + FORM_NAME;
@@ -42,6 +46,10 @@ public class FormUtils {
 
     public static void setQRCode(String srcFile, String desFolder, String image) {
         try {
+            File d = new File(desFolder);
+            if(!d.exists()) {
+                d.mkdirs();
+            }
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(srcFile), StandardCharsets.UTF_8));
             StringBuilder document = new StringBuilder();
             String line;
@@ -53,6 +61,9 @@ public class FormUtils {
 
             int index = document.indexOf("%s");
             document.replace(index, index + 2, image);
+            index = document.indexOf("%s");
+            String[] splits = image.split("[/.\\\\]");
+            document.replace(index,index+2, splits[splits.length-2]);
             File file = new File(image);
             if(!file.exists()) {
                 throw new FileNotFoundException("qr code path error!");
@@ -72,6 +83,10 @@ public class FormUtils {
 
     public static void convertXhtmlToPdf(String srcFolder, String desFolder) {
         try {
+            File d = new File(desFolder);
+            if(!d.exists()) {
+                d.mkdirs();
+            }
             File src = new File(srcFolder);
             if (!src.exists()) {
                 throw new FileNotFoundException("File not exists!");
