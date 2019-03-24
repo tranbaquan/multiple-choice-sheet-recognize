@@ -9,4 +9,6 @@ public interface PDFGenerable {
     void setMultiQRCode(String srcFile, String desFolder, String qrFolder);
 
     void convertXhtmlToPdf(String srcFolder, String desFolder);
+
+    void convertXhtmlToOnePdf(String srcFolder, String desFolder);
 }

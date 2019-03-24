@@ -25,12 +25,17 @@ public class PDFGenerator implements PDFGenerable{
         FormUtils.convertXhtmlToPdf(srcFolder, desFolder);
     }
 
+    @Override
+    public void convertXhtmlToOnePdf(String srcFolder, String desFolder) {
+        FormUtils.convertXhtmlToOnePdf(srcFolder, desFolder);
+    }
+
     public void exportPdf(int year, String term, String board, String[] body, String qrFolder, String outputFolder) {
         generateDefaultHtml(year, term, board, body, outputFolder);
         String form = outputFolder + "/form.html";
         String html = outputFolder + "/html";
         String pdf = outputFolder + "/pdf";
         setMultiQRCode(form, html, qrFolder);
-        convertXhtmlToPdf(html, pdf);
+        convertXhtmlToOnePdf(html, pdf);
     }
 }
