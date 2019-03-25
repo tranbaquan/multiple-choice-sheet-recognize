@@ -56,6 +56,20 @@
             <version>3.4.2-0</version>
         </dependency>
 
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/com.google.zxing/core &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>com.google.zxing</groupId>-->
+            <!--<artifactId>core</artifactId>-->
+            <!--<version>3.3.3</version>-->
+        <!--</dependency>-->
+
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/com.google.zxing/javase &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>com.google.zxing</groupId>-->
+            <!--<artifactId>javase</artifactId>-->
+            <!--<version>3.3.3</version>-->
+        <!--</dependency>-->
+
 
     </dependencies>
 

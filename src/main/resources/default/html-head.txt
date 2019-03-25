@@ -74,6 +74,10 @@
             font-size: 11px;
         }
 
+        .text-ss {
+            font-size: 8px;
+        }
+
         table {
             width: 100%;
         }

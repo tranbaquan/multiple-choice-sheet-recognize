@@ -17,7 +17,7 @@ public class FormUtils {
     private static final String HEAD_PATH = "src/main/resources/default/html-head.txt";
     private static final String FORM_NAME = "form.html";
 
-    public static void generateHtml(FormHeader formHeader, FormBody formBody, String desFolder) {
+    public void generateHtml(FormHeader formHeader, FormBody formBody, String desFolder) {
         try {
             File d = new File(desFolder);
             if (!d.exists()) {
@@ -44,7 +44,7 @@ public class FormUtils {
         }
     }
 
-    public static void setQRCode(String srcFile, String desFolder, String image) {
+    public void setQRCode(String srcFile, String desFolder, String image) {
         try {
             File d = new File(desFolder);
             if (!d.exists()) {
@@ -81,7 +81,7 @@ public class FormUtils {
         }
     }
 
-    public static void convertXhtmlToPdf(String srcFolder, String desFolder) {
+    public void convertXhtmlToPdf(String srcFolder, String desFolder) {
         try {
             File d = new File(desFolder);
             if (!d.exists()) {
@@ -125,7 +125,7 @@ public class FormUtils {
         }
     }
 
-    public static void convertXhtmlToOnePdf(String srcFolder, String desFolder) {
+    public void convertXhtmlToOnePdf(String srcFolder, String desFolder) {
         try {
             File d = new File(desFolder);
             if (!d.exists()) {
@@ -160,7 +160,7 @@ public class FormUtils {
         }
     }
 
-    public static void setMultiQRCode(String srcFile, String desFolder, String qrFolder) {
+    public void setMultiQRCode(String srcFile, String desFolder, String qrFolder) {
         try {
             File src = new File(qrFolder);
             if (!src.exists()) {
@@ -176,6 +176,59 @@ public class FormUtils {
                 setQRCode(srcFile, desFolder, file.getAbsolutePath());
             }
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public StringBuilder optQrCode(StringBuilder data, String image) {
+        int index = data.indexOf("%s");
+        data.replace(index, index + 2, image);
+        index = data.indexOf("%s");
+        String[] splits = image.split("[/.\\\\]");
+        String hex = splits[splits.length-2];
+        StringBuilder b = new StringBuilder();
+        for (int i = 0; i < hex.length()-1; i+=2) {
+            b.append((char)Integer.parseInt(hex.substring(i, i+2), 16));
+        }
+        data.replace(index, index + 2, b.toString());
+        return data;
+    }
+
+    public void optConvert(String srcFile, String outputFile, String qrFolder) {
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(srcFile), StandardCharsets.UTF_8));
+            StringBuilder s = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                s.append(line);
+            }
+            br.close();
+
+            File src = new File(qrFolder);
+            if (!src.exists()) {
+                throw new FileNotFoundException("File not exists!");
+            }
+            File d = new File(outputFile);
+            Document document = new Document(PageSize.A4);
+            FileOutputStream fos = new FileOutputStream(d);
+            PdfWriter writer = PdfWriter.getInstance(document, fos);
+            document.open();
+
+            File[] subFiles = src.listFiles();
+            if (subFiles == null) {
+                throw new FileNotFoundException("Folder is empty!");
+            }
+            StringBuilder data;
+            for (File file : subFiles) {
+                data = new StringBuilder(s);
+                optQrCode(data, file.getAbsolutePath());
+                XMLWorkerHelper.getInstance().parseXHtml(writer, document, new StringReader(data.toString()));
+                document.newPage();
+            }
+            document.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (DocumentException e) {
             e.printStackTrace();
         }
     }

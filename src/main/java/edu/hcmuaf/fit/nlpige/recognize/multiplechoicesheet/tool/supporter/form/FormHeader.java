@@ -46,7 +46,7 @@ public class FormHeader {
         builder.append("</div>\n");
         builder.append("<div class=\"qr-code\">\n");
         builder.append("<img src=\"%s\" alt=\"\"/>\n");
-        builder.append("<div class=\"text-small\" style=\"text-align: center\">%s</div>\n");
+        builder.append("<div class=\"text-ss\" style=\"text-align: center\">%s</div>\n");
         builder.append("</div>\n");
         builder.append("</div>\n");
         builder.append("<div class=\"title\">\n");
