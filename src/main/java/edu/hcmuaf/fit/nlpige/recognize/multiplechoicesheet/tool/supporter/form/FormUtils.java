@@ -17,8 +17,7 @@ public class FormUtils {
     private static final String HEAD_PATH = "src/main/resources/default/html-head.txt";
     private static final String FORM_NAME = "form.html";
 
-    public void generateHtml(FormHeader formHeader, FormBody formBody, String desFolder) {
-        try {
+    public void generateHtml(FormHeader formHeader, FormBody formBody, String desFolder) throws IOException {
             File d = new File(desFolder);
             if (!d.exists()) {
                 d.mkdirs();
@@ -39,19 +38,15 @@ public class FormUtils {
             pw.write(formBody.getHtml());
             pw.flush();
             pw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
-    public void setQRCode(String srcFile, String desFolder, String image) {
-        try {
+    public void setQRCode(String srcFile, String desFolder, String image) throws IOException {
             File d = new File(desFolder);
             if (!d.exists()) {
                 d.mkdirs();
             }
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(srcFile), StandardCharsets.UTF_8));
             StringBuilder document = new StringBuilder();
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(srcFile), StandardCharsets.UTF_8));
             String line;
             while ((line = br.readLine()) != null) {
                 document.append(line);
@@ -76,24 +71,35 @@ public class FormUtils {
             pw.write(document.toString());
             pw.flush();
             pw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 
-    public void convertXhtmlToPdf(String srcFolder, String desFolder) {
-        try {
+    public StringBuilder optQrCode(StringBuilder data, String image) {
+        int index = data.indexOf("%s");
+        data.replace(index, index + 2, image);
+        index = data.indexOf("%s");
+        String[] splits = image.split("[/.\\\\]");
+        String hex = splits[splits.length-2];
+        StringBuilder b = new StringBuilder();
+        for (int i = 0; i < hex.length()-1; i+=2) {
+            b.append((char)Integer.parseInt(hex.substring(i, i+2), 16));
+        }
+        data.replace(index, index + 2, b.toString());
+        return data;
+    }
+
+    public void convertXhtmlToPdf(String srcFolder, String desFolder) throws IOException, DocumentException {
+
             File d = new File(desFolder);
             if (!d.exists()) {
                 d.mkdirs();
             }
+
             File src = new File(srcFolder);
             if (!src.exists()) {
                 throw new FileNotFoundException("File not exists!");
             }
-
             File[] subFiles = src.listFiles();
-
             if (subFiles == null) {
                 throw new FileNotFoundException("Folder is empty!");
             }
@@ -120,9 +126,7 @@ public class FormUtils {
                 XMLWorkerHelper.getInstance().parseXHtml(writer, document, fis, Charset.forName("UTF-8"));
                 document.close();
             }
-        } catch (DocumentException | IOException e) {
-            e.printStackTrace();
-        }
+
     }
 
     public void convertXhtmlToOnePdf(String srcFolder, String desFolder) {
@@ -135,9 +139,7 @@ public class FormUtils {
             if (!src.exists()) {
                 throw new FileNotFoundException("File not exists!");
             }
-
             File[] subFiles = src.listFiles();
-
             if (subFiles == null) {
                 throw new FileNotFoundException("Folder is empty!");
             }
@@ -160,13 +162,12 @@ public class FormUtils {
         }
     }
 
-    public void setMultiQRCode(String srcFile, String desFolder, String qrFolder) {
+    public void setMultiQRCode(String srcFile, String desFolder, String qrFolder) throws IOException {
         try {
             File src = new File(qrFolder);
             if (!src.exists()) {
                 throw new FileNotFoundException("File not exists!");
             }
-
             File[] subFiles = src.listFiles();
             if (subFiles == null) {
                 throw new FileNotFoundException("Folder is empty!");
@@ -180,27 +181,14 @@ public class FormUtils {
         }
     }
 
-    public StringBuilder optQrCode(StringBuilder data, String image) {
-        int index = data.indexOf("%s");
-        data.replace(index, index + 2, image);
-        index = data.indexOf("%s");
-        String[] splits = image.split("[/.\\\\]");
-        String hex = splits[splits.length-2];
-        StringBuilder b = new StringBuilder();
-        for (int i = 0; i < hex.length()-1; i+=2) {
-            b.append((char)Integer.parseInt(hex.substring(i, i+2), 16));
-        }
-        data.replace(index, index + 2, b.toString());
-        return data;
-    }
 
-    public void optConvert(String srcFile, String outputFile, String qrFolder) {
-        try {
+    public void optConvert(String srcFile, String outputFile, String qrFolder) throws IOException, DocumentException {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(srcFile), StandardCharsets.UTF_8));
             StringBuilder s = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
                 s.append(line);
+                s.append("\n");
             }
             br.close();
 
@@ -226,10 +214,6 @@ public class FormUtils {
                 document.newPage();
             }
             document.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        }
+
     }
 }

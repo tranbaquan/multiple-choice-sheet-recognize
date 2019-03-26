@@ -1,6 +1,10 @@
 package edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.tool.supporter.form;
 
 
+import com.itextpdf.text.DocumentException;
+
+import java.io.IOException;
+
 public class PDFGenerator implements PDFGenerable {
     private FormUtils formUtils;
 
@@ -10,24 +14,40 @@ public class PDFGenerator implements PDFGenerable {
 
     @Override
     public void generateDefaultHtml(int year, String term, String board, String[] body, String desFolder) {
-        FormHeader formHeader = new FormHeader(year, term, board);
-        FormBody formBody = new FormBody(body);
-        formUtils.generateHtml(formHeader, formBody, desFolder);
+        try {
+            FormHeader formHeader = new FormHeader(year, term, board);
+            FormBody formBody = new FormBody(body);
+            formUtils.generateHtml(formHeader, formBody, desFolder);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void setQRCode(String srcFile, String desFolder, String qrFile) {
-        formUtils.setQRCode(srcFile, desFolder, qrFile);
+        try {
+            formUtils.setQRCode(srcFile, desFolder, qrFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void setMultiQRCode(String srcFile, String desFolder, String qrFolder) {
-        formUtils.setMultiQRCode(srcFile, desFolder, qrFolder);
+        try {
+            formUtils.setMultiQRCode(srcFile, desFolder, qrFolder);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void convertXhtmlToPdf(String srcFolder, String desFolder) {
-        formUtils.convertXhtmlToPdf(srcFolder, desFolder);
+        try {
+            formUtils.convertXhtmlToPdf(srcFolder, desFolder);
+        } catch (IOException | DocumentException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -45,9 +65,13 @@ public class PDFGenerator implements PDFGenerable {
 //    }
 
     public void exportPdf(int year, String term, String board, String[] body, String qrFolder, String outputFolder, String outputFileName) {
-        generateDefaultHtml(year, term, board, body, outputFolder);
-        String form = outputFolder + "/form.html";
-        formUtils.optConvert(form, outputFolder + "/" + outputFileName, qrFolder);
+        try {
+            generateDefaultHtml(year, term, board, body, outputFolder);
+            String form = outputFolder + "/form.html";
+            formUtils.optConvert(form, outputFolder + "/" + outputFileName, qrFolder);
+        } catch (IOException | DocumentException e) {
+            e.printStackTrace();
+        }
     }
 
 

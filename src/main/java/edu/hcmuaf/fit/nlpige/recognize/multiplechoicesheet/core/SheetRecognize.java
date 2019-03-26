@@ -24,14 +24,9 @@ public class SheetRecognize implements SheetRecognizable {
 
     static {
         String osName = System.getProperty("os.name");
-//        String osArch = System.getProperty("os.arch");
-//        System.out.println(osName);
-//        System.out.println(osArch);
-//        System.out.println(System.getenv("ProgramFiles(x86)") != null);
         String userDir = System.getProperty("user.dir");
         if (osName.contains("Windows 7") && System.getenv("ProgramFiles(x86)") != null) {
-//            System.out.println("Good");
-            System.load(userDir+ "/src/main/resources/opencv_java341.dll");
+            System.load(userDir + "/src/main/resources/opencv_java341.dll");
         } else {
             loadShared();
             System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -43,6 +38,8 @@ public class SheetRecognize implements SheetRecognizable {
     private Rect boundingRect;
     private int questionNum;
     private PaperType paperType;
+    private ArrayList<MatOfPoint>  contours;
+    private Mat hierarchy;
 
     public SheetRecognize() {
         this.paperType = PaperType.A4;
@@ -84,9 +81,9 @@ public class SheetRecognize implements SheetRecognizable {
 
     @Override
     public void detectBoundingBox() {
-        ArrayList<MatOfPoint> contours = new ArrayList<>();
-        Mat hierarchy = new Mat();
-        Imgproc.findContours(thresh.clone(), contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
+        contours = new ArrayList<>();
+        hierarchy = new Mat();
+        Imgproc.findContours(thresh.clone(), this.contours, this.hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
 
         HashMap<Integer, MatOfPoint> quadrilaterals = new HashMap<>();
         MatOfPoint2f approxCurve = new MatOfPoint2f();
@@ -110,8 +107,8 @@ public class SheetRecognize implements SheetRecognizable {
 
             double[] boxHierarchy = hierarchy.get(0, index);
 
-            Rect r = Imgproc.boundingRect(contours.get(index));
-            Imgproc.rectangle(input, new Point(r.x, r.y), new Point(r.x + r.width, r.y + r.height), new Scalar(new Random().nextInt(255), new Random().nextInt(255), new Random().nextInt(255)), 2);
+//            Rect r = Imgproc.boundingRect(contours.get(index));
+//            Imgproc.rectangle(input, new Point(r.x, r.y), new Point(r.x + r.width, r.y + r.height), new Scalar(new Random().nextInt(255), new Random().nextInt(255), new Random().nextInt(255)), 2);
             if (boxHierarchy[3] == -1) {
                 Rect roi = Imgproc.boundingRect(contours.get(index));
                 outerQuads.add(roi);
@@ -155,24 +152,24 @@ public class SheetRecognize implements SheetRecognizable {
         thresh = thresh.submat(boundingRect);
         input = input.submat(boundingRect);
 
-        ArrayList<MatOfPoint> contours = new ArrayList<>();
-        Mat hierarchy = new Mat();
+        contours = new ArrayList<>();
+        hierarchy = new Mat();
         Imgproc.findContours(thresh, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
         List<Rect> rows = new ArrayList<>();
+
         for (MatOfPoint contour : contours) {
             Rect rect = Imgproc.boundingRect(contour);
             int ratio = rect.width / rect.height;
-            if (ratio > 10 && ratio < 20) {
+            if (ratio > 10 && ratio < 20 && rect.width > boundingRect.width - 50) {
                 rows.add(rect);
 //                Imgproc.rectangle(input, new Point(rect.x, rect.y),
 //                        new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0), 2);
             }
         }
+
 //        imageViewer.show(input);
         rows.sort(Comparator.comparing(rect -> rect.y));
         rows.remove(0);
-
-//        System.out.println(rows.size());
 
         if (rows.size() != questionNum) {
             throw new RecognizeException();
@@ -190,11 +187,12 @@ public class SheetRecognize implements SheetRecognizable {
             recordRect.width = recordRect.width * 2 / 3;
 
             Mat mat = edged.submat(recordRect);
-            ArrayList<MatOfPoint> contours = new ArrayList<>();
-            Mat hierarchy = new Mat();
-            Imgproc.findContours(mat, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
 
+            hierarchy = new Mat();
+            contours = new ArrayList<>();
+            Imgproc.findContours(mat, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
             List<Rect> choices = new ArrayList<>();
+
             for (int i = 0; i < contours.size(); i++) {
                 double[] choiceHierarchy = hierarchy.get(0, i);
 
