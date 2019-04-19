@@ -9,12 +9,12 @@ import java.util.Arrays;
 public class RecognizeRunner {
 
     public static void main(String[] args) {
-        String file = "C:\\Users\\tranb\\Downloads\\Microsoft.SkypeApp_kzf8qxf38zg5c!App\\All\\scan\\03262019112351_001.png";
-//        String file = "C:\\Users\\tranb\\Downloads\\Microsoft.SkypeApp_kzf8qxf38zg5c!App\\All\\HDQT_CongTyCoPhan.png";
+        String file = "C:\\Users\\tranb\\Downloads\\Microsoft.SkypeApp_kzf8qxf38zg5c!App" +
+                "\\All\\PBC-BKS-img\\Scan2019-04-01_114222_122.jpg";
         SheetRecognize sheetRecognize = new SheetRecognize();
         sheetRecognize.readFile(file);
         sheetRecognize.imageProc();
-        sheetRecognize.setQuestionNum(9);
+        sheetRecognize.setQuestionNum(3);
         int[][] answer = sheetRecognize.recognize();
         Report report = new Report(answer);
         System.out.println(report.getReport());

@@ -38,7 +38,7 @@ public class SheetRecognize implements SheetRecognizable {
     private Rect boundingRect;
     private int questionNum;
     private PaperType paperType;
-    private ArrayList<MatOfPoint>  contours;
+    private ArrayList<MatOfPoint> contours;
     private Mat hierarchy;
 
     public SheetRecognize() {
@@ -187,7 +187,6 @@ public class SheetRecognize implements SheetRecognizable {
             recordRect.width = recordRect.width * 2 / 3;
 
             Mat mat = edged.submat(recordRect);
-
             hierarchy = new Mat();
             contours = new ArrayList<>();
             Imgproc.findContours(mat, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
@@ -210,6 +209,8 @@ public class SheetRecognize implements SheetRecognizable {
                     .filter(r -> r.height > 5 && r.width > 5)
                     .sorted(Comparator.comparing(r -> r.x))
                     .collect(Collectors.toList());
+
+//            System.out.println(choices.size());
 
             if (choices.size() != questionNum) {
                 throw new RecognizeException();

@@ -2,7 +2,7 @@ package edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.tool.supporter.form;
 
 public interface PDFGenerable {
 
-    void generateDefaultHtml(int year, String term, String board, String[] body, String desFolder);
+    void generateDefaultHtml(String line1, String line2, String line3, String term, String board, String[] body, String desFolder);
 
     void setQRCode(String srcFile, String desFolder, String qrFile);
 

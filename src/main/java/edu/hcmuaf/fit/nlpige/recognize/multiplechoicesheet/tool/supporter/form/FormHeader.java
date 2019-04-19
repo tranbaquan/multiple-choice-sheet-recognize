@@ -1,22 +1,42 @@
 package edu.hcmuaf.fit.nlpige.recognize.multiplechoicesheet.tool.supporter.form;
 
 public class FormHeader {
-    private int year;
+    private String line1;
+    private String line2;
+    private String line3;
     private String term;
     private String board;
 
-    public FormHeader(int year, String term, String board) {
-        this.year = year;
+    public FormHeader(String line1, String line2, String line3, String term, String board) {
+        this.line1 = line1;
+        this.line2 = line2;
+        this.line3 = line3;
         this.term = term;
         this.board = board;
     }
 
-    public int getYear() {
-        return year;
+    public String getLine1() {
+        return line1;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public void setLine1(String line1) {
+        this.line1 = line1;
+    }
+
+    public String getLine2() {
+        return line2;
+    }
+
+    public void setLine2(String line2) {
+        this.line2 = line2;
+    }
+
+    public String getLine3() {
+        return line3;
+    }
+
+    public void setLine3(String line3) {
+        this.line3 = line3;
     }
 
     public String getTerm() {
@@ -50,9 +70,9 @@ public class FormHeader {
         builder.append("</div>\n");
         builder.append("</div>\n");
         builder.append("<div class=\"title\">\n");
-        builder.append(String.format("<h3 class=\"normal-title\">ĐẠI HỘI CỔ ĐÔNG THƯỜNG NIÊN NĂM %s</h3>\n", year));
-        builder.append("<h3 class=\"normal-title\">NGÂN HÀNG TMCP PHÁT TRIỂN</h3>\n");
-        builder.append("<h3 class=\"normal-title\">THÀNH PHỐ HỒ CHÍ MINH</h3>\n");
+        builder.append(String.format("<h3 class=\"normal-title\">%s</h3>\n", line1));
+        builder.append(String.format("<h3 class=\"normal-title\">%s</h3>\n", line2));
+        builder.append(String.format("<h3 class=\"normal-title\">%s</h3>\n", line3));
         builder.append("<h1 class=\"nameSheet\">PHIẾU BẦU CỬ</h1>\n");
         builder.append(String.format("<h3 class=\"small-title\">THÀNH VIÊN %s</h3>\n", board));
         builder.append(String.format("<h3 class=\"small-title\">NHIỆM KỲ %s</h3>\n", term));

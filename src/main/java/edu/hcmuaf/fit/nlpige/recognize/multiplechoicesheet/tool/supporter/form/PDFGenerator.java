@@ -13,9 +13,9 @@ public class PDFGenerator implements PDFGenerable {
     }
 
     @Override
-    public void generateDefaultHtml(int year, String term, String board, String[] body, String desFolder) {
+    public void generateDefaultHtml(String line1, String line2, String line3, String term, String board, String[] body, String desFolder) {
         try {
-            FormHeader formHeader = new FormHeader(year, term, board);
+            FormHeader formHeader = new FormHeader(line1, line2, line3, term, board);
             FormBody formBody = new FormBody(body);
             formUtils.generateHtml(formHeader, formBody, desFolder);
         } catch (IOException e) {
@@ -64,9 +64,9 @@ public class PDFGenerator implements PDFGenerable {
 //        convertXhtmlToOnePdf(html, pdf);
 //    }
 
-    public void exportPdf(int year, String term, String board, String[] body, String qrFolder, String outputFolder, String outputFileName) {
+    public void exportPdf(String line1, String line2, String line3, String term, String board, String[] body, String qrFolder, String outputFolder, String outputFileName) {
         try {
-            generateDefaultHtml(year, term, board, body, outputFolder);
+            generateDefaultHtml(line1, line2, line3, term, board, body, outputFolder);
             String form = outputFolder + "/form.html";
             formUtils.optConvert(form, outputFolder + "/" + outputFileName, qrFolder);
         } catch (IOException | DocumentException e) {
